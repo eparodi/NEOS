@@ -6,6 +6,8 @@
 #include "include/naiveConsole.h"
 #include "include/keyboard.h"
 
+
+
 boolean
 setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
   if ( sizeof(INT_DESCRIPTOR) * index > (qword) idt_end ){
@@ -29,7 +31,8 @@ irq_handler(int irq_number){
       // Set Timer Tick Interrupt.
       break;
     case 0x01:
-      // Set Keyboard Interrupt.
+      update_screen();
+
       break;
   }
 }

@@ -107,7 +107,7 @@ int main()
 	
 	set_idt();
 
-	_int();
+
 	while(1){
 		_hlt();
 	}

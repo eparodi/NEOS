@@ -12,4 +12,14 @@
 byte
 _read_keyboard();
 
+void
+update_screen();
+
+static int ctrlPressed = -1;
+static int shiftPressed = -1;
+static int altPressed = -1;
+static int mapSize = 90;
+
+
+
 #endif
