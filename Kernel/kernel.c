@@ -108,6 +108,12 @@ int main()
 
 	ncPrint("[Finished]");
 	
+<<<<<<< HEAD
+=======
+	set_idt();
+
+
+>>>>>>> eff5b64389ba2eebe0d6e13684fe42bbdb9f8ff4
 	while(1){
 		_hlt();
 	}
