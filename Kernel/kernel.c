@@ -39,7 +39,7 @@ void * initializeKernelBinary()
 {
 	char buffer[10];
 
-	ncPrint("[NoireOS]");
+	ncPrint("[NEOS]");
 	ncNewline();
 
 	ncPrint("CPU Vendor:");
@@ -87,6 +87,10 @@ int main()
 	ncNewline();
 	ncPrint("[Kernel Main]");
 	ncNewline();
+	ncPrint("Loading Interrupt Descriptor Table: ");
+	set_idt();
+	ncPrint("Finished.");
+	ncNewline();
 	ncPrint("  Sample code module at 0x");
 	ncPrintHex((uint64_t)sampleCodeModuleAddress);
 	ncNewline();
@@ -103,11 +107,7 @@ int main()
 	ncNewline();
 
 	ncPrint("[Finished]");
-	ncClear();
 	
-	set_idt();
-
-	_int();
 	while(1){
 		_hlt();
 	}

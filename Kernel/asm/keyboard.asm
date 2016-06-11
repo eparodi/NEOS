@@ -1,4 +1,4 @@
-GLOBAL read_keyboard
+GLOBAL _read_keyboard
 
 section .text
 

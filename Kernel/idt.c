@@ -5,6 +5,7 @@
 
 #include "include/naiveConsole.h"
 #include "include/keyboard.h"
+#include "include/systemcall.h"
 
 boolean
 setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
@@ -40,6 +41,12 @@ set_idt(){
   setup_idt_entry( IRQ_INDEX , 0x08 , (qword) &_irq00Handler, ACS_INT);
   // loads the keyboard.
   setup_idt_entry( IRQ_INDEX + 1 , 0x08 , (qword) &_irq01Handler, ACS_INT);
+  
   _picMasterMask(0xFC);
   _sti();
+
+  // load system calls.
+  start_system_call();
+  // sets system call function in vector.
+  setup_idt_entry( SYS_CALL_INDEX , 0x08 , (qword) &_sys_call , ACS_INT);
 }
