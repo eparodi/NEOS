@@ -26,42 +26,45 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 								  	"3", "0", ".", "", "", "", "", "", "", ""}; 				// 81 - 90
 
 void
-update_screen(){
-	char keyCode = _read_keyboard();
+update_screen(char keyCode){
 	// Key Pressed
 	if (keyCode >= 0 && keyCode < mapSize) {
-		if (keyCode == 28) {							// Enter
-			printNewLine();
-		} else if (keyCode == 14) {						// Backspace
-			backspace();
-		} else if (keyCode == 42 || keyCode == 54) {	// L/R Shift
-			shiftPressed *= -1;
-		} else if (keyCode == 58) {						// Bloq Mayus
-			shiftPressed *= -1;
-		} else if (keyCode == 29) {						// Ctrl
-			ctrlPressed *= -1;
-		} else if (keyCode == 72) {						// Up Arrow
-			moveCursorUp();
-		} else if (keyCode == 80) {						// Down Arrow
-			moveCursorDown();
-		} else if (keyCode == 75) {						// Left Arrow
-			moveCursorLeft();
-		} else if (keyCode == 77) {						// Right Arrow
-			moveCursorRight();
-		} else if (keyCode == 83) {						// Supr
-			supr();
-		} else {										// Other
-			if (shiftPressed == 1) {
-				print(SHIFT_KEYS_VALUES[keyCode], 0x07);
-			} else {
-				print(KEYS_VALUES[keyCode], 0x07);
-			}
+		switch(keyCode){
+			case 28: printNewLine();
+				 break;
+			case 14: backspace();
+				 break;
+			case 42:
+			case 54:
+			case 58: shiftPressed*=-1;
+				 break;
+			case 29: ctrlPressed *= -1;
+				  break;
+			case 72: moveCursorUp();
+				break;
+			case 80: moveCursorDown();
+				break;
+			case 75: moveCursorLeft();
+				break;
+			case 77: moveCursorRight();
+				break;
+			case 83: supr();
+				break;
+			default:
+				if (shiftPressed == 1) {
+					print(SHIFT_KEYS_VALUES[keyCode], 0x07);
+				} else {
+					print(KEYS_VALUES[keyCode], 0x07);
+				}
+				break;
 		}
+	}
+
 	// Key Released
-	} else {
+ else {
 		if (keyCode == 170 || keyCode == 182) {			// L/R Shift
 			shiftPressed *= -1;
-		}		
+		}
 		if (keyCode == 157) {							// Ctrl
 			ctrlPressed *= -1;
 		}
@@ -69,10 +72,18 @@ update_screen(){
 
 }
 
+void add_to_buffer(){
+	char key_code = _read_keyboard();
+	buffer[(write_index++) % (BUFFER_SIZE-1)]= key_code;
+	update_screen(key_code);
+}
 
-
-
-
-
-
-
+char read_from_buffer(){
+		if(read_index > write_index){
+			//todo excepcion o algo;
+		}if(read_index == write_index){
+			//esperando teclas
+		}
+		char key = buffer[(read_index++) %(BUFFER_SIZE-1)];
+			return key;
+}

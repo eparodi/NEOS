@@ -30,7 +30,8 @@ irq_handler(int irq_number){
       // Set Timer Tick Interrupt.
       break;
     case 0x01:
-      update_screen();
+      add_to_buffer();
+      //update_screen();
       break;
   }
 }
@@ -41,7 +42,7 @@ set_idt(){
   setup_idt_entry( IRQ_INDEX , 0x08 , (qword) &_irq00Handler, ACS_INT);
   // loads the keyboard.
   setup_idt_entry( IRQ_INDEX + 1 , 0x08 , (qword) &_irq01Handler, ACS_INT);
-  
+
   _picMasterMask(0xFC);
   _sti();
 

@@ -10,14 +10,14 @@ strlen( const char * str );
 
 int
 putchar( char letter ){
-	write(1, &letter,1);
+	write(STD_OUT, &letter,1);
 	return letter;
 }
 
 int
 getc(){
 	char ans;
-	read(1, &ans, 1);
+	read(STD_IN, &ans, 1);
 	return ans;
 }
 

@@ -1,6 +1,6 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
-
+#define BUFFER_SIZE 10
 #include "types.h"
 
 /*
@@ -13,12 +13,16 @@ byte
 _read_keyboard();
 
 void
-update_screen();
-
+update_screen(char keyCode);
+void
+add_to_buffer();
 static int ctrlPressed = -1;
 static int shiftPressed = -1;
 static int altPressed = -1;
 static int mapSize = 90;
+static char buffer[BUFFER_SIZE];
+static int read_index = 0;
+static int write_index = 0;
 
 
 
