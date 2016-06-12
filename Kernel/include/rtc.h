@@ -24,7 +24,7 @@
 
 /*
  *	Gets the RAW data from the RTC.
- *	Parametres:
+ *	Parameters:
  *		-data_id: the number associated with the data wanted to be read.
  *	Return:
  *		The RAW data.
@@ -34,7 +34,7 @@ _get_rtc_data(byte data_id);
 
 /*
  *	Writes data in the RTC.
- *	Parametres:
+ *	Parameters:
  *		-data_id: the number associated with the data wanted to be read.
  *		-data: the data going to be written.
  */

@@ -16,4 +16,10 @@ void printNewLine();
 /* clear the screen */
 void clear();
 
+void backspace();
+void supr();
+void moveCursorUp();
+void moveCursorDown();
+void moveCursorRight();
+void moveCursorLeft();
 #endif

@@ -3,11 +3,8 @@
 #include "include/descriptors.h"
 #include "include/irq.h"
 
-#include "include/naiveConsole.h"
 #include "include/keyboard.h"
 #include "include/systemcall.h"
-
-
 
 boolean
 setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
@@ -27,13 +24,13 @@ setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
 
 void
 irq_handler(int irq_number){
+  //TODO change to array of pointer to function.
   switch( irq_number ){
     case 0x00:
       // Set Timer Tick Interrupt.
       break;
     case 0x01:
       update_screen();
-
       break;
   }
 }

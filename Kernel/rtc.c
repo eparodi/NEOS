@@ -9,9 +9,6 @@ normal_to_bcd(word data);
 
 word
 getSeconds(){
-	while (is_updating){
-		
-	}
 	return _get_rtc_data(SECONDS);
 }
 
@@ -23,11 +20,6 @@ getMinutes(){
 word
 getHours(){
 	return bcd_to_normal(_get_rtc_data(HOURS));	
-}
-
-word
-writeSeconds(word data){
-
 }
 
 boolean

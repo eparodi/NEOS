@@ -3,6 +3,7 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
+//#include <vsa_driver.h>
 
 #include <idt.h>
 #include <rtc.h>
@@ -108,12 +109,10 @@ int main()
 
 	ncPrint("[Finished]");
 	
-<<<<<<< HEAD
-=======
 	set_idt();
+	//start_video_mode();
 
 
->>>>>>> eff5b64389ba2eebe0d6e13684fe42bbdb9f8ff4
 	while(1){
 		_hlt();
 	}

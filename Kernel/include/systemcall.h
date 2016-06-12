@@ -5,7 +5,9 @@
 
 /*
  *	This library was implemented in order to facilitate the development of System Call.
- *	Each parameter received	
+ *	Each parameter received by the System Call function is moved to the respective
+ *	register to pass the parametres in C by _sys_call function. Each register is associated
+ *  to a parameter with the same name. 
  */
 
 /*
