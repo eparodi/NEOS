@@ -1,6 +1,8 @@
 #ifndef STDIO_H
 #define STDIO_H
 
+#define NULL 0
+
 /*
  *	Writes data in the correspondent file descriptor.
  *	Paramaters:

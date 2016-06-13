@@ -1,10 +1,6 @@
 #include "include/keyboard.h"
 #include "include/videoDriver.h"
 
-
-
-
-
 static char* KEYS_VALUES[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", 			// 0 - 10
 									"0", "'", "¿", "BACKSPACE", "    ", "q", "w", "e", "r", "t",// 11 - 20
 								  	"y", "u", "i", "o", "p", "´", "+", "", "", "a",				// 21 - 30

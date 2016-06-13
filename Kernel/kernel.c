@@ -111,6 +111,11 @@ int main()
 	
 	set_idt();
 	//start_video_mode();
+	
+	/*
+	for ( int y = 0 ; ; y++){
+		draw_pixel(y,y,y);
+	}*/
 
 
 	while(1){
