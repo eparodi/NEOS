@@ -3,6 +3,8 @@
 #define BUFFER_SIZE 100
 #include "types.h"
 
+//TODO: add comments.
+
 /*
  * 	Gets the RAW data from the Keyboard. If the data is not read, 
  * 	new IRQ's will not be sent.
@@ -18,6 +20,7 @@ void
 add_to_buffer();
 char
 read_from_buffer();
+
 static int ctrlPressed = -1;
 static int shiftPressed = -1;
 static int altPressed = -1;

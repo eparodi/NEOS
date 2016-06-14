@@ -11,7 +11,7 @@ pow(long base, long exponent){
 }
 
 int
-digits(long number, int base){
+digits(long number, int radix){
 	int ans = 0;
 	if (number == 0)
 		return 1;
@@ -22,36 +22,36 @@ digits(long number, int base){
 	}
 
 	while ( number != 0 ){
-		number /= base;
+		number /= radix;
 		ans++;
 	}
 	return ans;
 }
 
 int
-i_to_s(char * str, long number, int base){
+i_to_s(char * buffer, long number, int radix){
 	int size, i, aux, aux_size;
 	char letters[27] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N',
 						'O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
-	size = digits(number, base);
+	size = digits(number, radix);
 	aux_size = size;
 
 	if ( number < 0 ){
-		str[0] = '-';
+		buffer[0] = '-';
 		number *= -1;
-		str++;
+		buffer++;
 		aux_size--;
 	}
 
 	for(i = aux_size - 1; i >= 0 ; i-- ){
-		aux = number % base;
+		aux = number % radix;
 		if ( aux >= 10 && aux <= 37){
-			str[i] = letters[aux - 10]; 
+			buffer[i] = letters[aux - 10]; 
 		}else{
-			str[i] = number % base + '0';
+			buffer[i] = number % radix + '0';
 		}
-		number /= base;
+		number /= radix;
 	}
 	return size;
 }

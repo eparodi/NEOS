@@ -3,7 +3,7 @@
 
 
 
-/* print msg ('\0' given string) with given coe color */
+/* print msg ('\0' given string) with given code color */
 void print(const char* msg, char colourCode);
 
 /* print any string whith given color */

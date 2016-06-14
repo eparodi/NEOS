@@ -110,6 +110,7 @@ void
 clear_screen(){
   int i, j;
   byte * draw = screen;
+  buffer_position = 0;
   for ( i = 0 ; i <= xres; i++ ){
     for( j = 0 ; j <= yres; j++ ){
       draw[pixel_width * j] = 0;
@@ -127,7 +128,7 @@ print_char(unsigned char c, int color ){
 }
 
 void
-print_string(char * str, int color ){
+print_string(const char * str, int color ){
   int i = 0;
   while(str[i] != '\0'){
     print_char(str[i],color);
@@ -136,7 +137,7 @@ print_string(char * str, int color ){
 }
 
 void
-print_string_by_length(char * str, int length , int color){
+print_string_by_length(const char * str, int length , int color){
   int i = 0;
   while( i < length){
     print_char(str[i],color);
