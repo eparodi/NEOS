@@ -1,27 +1,25 @@
 /* sampleCodeModule.c */
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <shell.h>
+#include "include/stdio.h"
+#include "include/math.h"
+#include "include/stdlib.h"
+#include "include/shell.h"
 
-char * v = (char*)0xB8000 + 79 * 2;
-
-static int var1 = 0;
-static int var2 = 0;
+//static int var1 = 0;
+//static int var2 = 0;
 
 int
 main() {
 	//All the following code may be removed
-//	clearScreen();
-	char * test = "Eliseo se la come";
+	//	clearScreen();
 	start_shell();
-//	printf("The test text is: %s", &test);
+	//	printf("The test text is: %s", &test);
 	//Test if BSS is properly set up
-	if (var1 == 0 && var2 == 0)
-		return 0xDEADC0DE;
+	//if (var1 == 0 && var2 == 0)
+	//	return 0xDEADC0DE;
 
 	return 0xDEADBEEF;
 }
+
 void clearScreen() {
 	char* cursor =(char*)0xB8000;
 	int i = 0;

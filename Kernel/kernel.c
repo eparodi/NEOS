@@ -90,6 +90,7 @@ int main()
 	ncNewline();
 	ncPrint("Loading Interrupt Descriptor Table: ");
 	set_idt();
+	start_video_mode();
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");
@@ -108,9 +109,6 @@ int main()
 	ncNewline();
 
 	ncPrint("[Finished]");
-
-	set_idt();
-	//start_video_mode();
 
 	/*
 	for ( int y = 0 ; ; y++){

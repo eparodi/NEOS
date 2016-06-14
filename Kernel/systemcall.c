@@ -2,7 +2,8 @@
 #include "include/systemcall.h"
 #include "include/videoDriver.h"
 #include "include/keyboard.h"
-#include "naiveConsole.h"
+#include "include/naiveConsole.h"
+#include "include/vsa_driver.h"
 
 /* The amount of system call in Linux API. */
 #define SYS_CALL_SIZE 190
@@ -94,10 +95,10 @@ read_sc(qword _rbx, char * _rcx, qword _rdx, qword _rdi, qword _rsi ){
 qword
 write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	if ( _rbx == STD_OUT ){
-		printWithLength( _rcx, _rdx ,0x0F);
+		print_string_by_length( _rcx, _rdx ,0xffffff);
 		return _rdx;
 	}else if ( _rbx == STD_ERR ) {
-		printWithLength( _rcx, _rdx ,0x7C);
+		print_string_by_length( _rcx, _rdx ,0xffffff);
 		return _rdx;
 	}
 	return -1 ;

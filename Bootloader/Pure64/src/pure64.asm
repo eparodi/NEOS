@@ -89,9 +89,9 @@ clearcs:
 
 ; Set video mode (Eliseo)
 ; http://www.ctyme.com/intr/rb-0275.htm
-;	mov ax, 0x4F02
-;	mov bx, 0x107
-;	int 0x10
+	mov ax, 0x4F02
+	mov bx, 0x118
+	int 0x10
 
 ; At this point we are done with real mode and BIOS interrupts. Jump to 32-bit mode.
 	lgdt [cs:GDTR32]		; Load GDT register

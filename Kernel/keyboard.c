@@ -31,7 +31,8 @@ update_screen(char keyCode){
 		switch(keyCode){
 			case 28: printNewLine();
 				 break;
-			case 14: backspace();
+			case 14: delete(); 
+				//backspace();
 				 break;
 			case 42:
 			case 54:
@@ -51,9 +52,11 @@ update_screen(char keyCode){
 				break;
 			default:
 				if (shiftPressed == 1) {
-					print(SHIFT_KEYS_VALUES[keyCode], 0x07);
+					print_char(SHIFT_KEYS_VALUES[keyCode], 0xffffff);
+					//print(SHIFT_KEYS_VALUES[keyCode], 0x07);
 				} else {
-					print(KEYS_VALUES[keyCode], 0x07);
+					print_char(KEYS_VALUES[keyCode], 0xffffff);
+					//print(KEYS_VALUES[keyCode], 0x07);
 				}
 				break;
 		}
