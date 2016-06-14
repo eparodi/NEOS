@@ -1,5 +1,6 @@
 #include "include/keyboard.h"
 #include "include/videoDriver.h"
+#include "include/naiveConsole.h"
 
 static char* KEYS_VALUES[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", 			// 0 - 10
 									"0", "'", "¿", "BACKSPACE", "    ", "q", "w", "e", "r", "t",// 11 - 20
@@ -21,10 +22,12 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 								  	"7", "8", "9", "-", "4", "5", "6", "+", "1", "2", 			// 71 - 80
 								  	"3", "0", ".", "", "", "", "", "", "", ""}; 				// 81 - 90
 
+static int addBuff = -1;
 void
 update_screen(char keyCode){
 	// Key Pressed
 	if (keyCode >= 0 && keyCode < mapSize) {
+	addBuff = 1;
 		switch(keyCode){
 			case 28: printNewLine();
 				 break;
@@ -64,22 +67,30 @@ update_screen(char keyCode){
 		if (keyCode == 157) {							// Ctrl
 			ctrlPressed *= -1;
 		}
+		addBuff = -1;
 	}
 
 }
 
 void add_to_buffer(){
 	char key_code = _read_keyboard();
-	buffer[(write_index++) % (BUFFER_SIZE-1)]= key_code;
 	update_screen(key_code);
+	printNum(write_index,0x0A);
+	if(addBuff == 1){
+	print("entre",0x07);
+		buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code];
+	}
+	print(KEYS_VALUES[key_code],0x07);
+	print(buffer,0x07);
 }
 
 char read_from_buffer(){
-		if(read_index > write_index){
+	//	if(read_index > write_index){
 			//todo excepcion o algo;
-		}if(read_index == write_index){
-			//esperando teclas
+		if(read_index == write_index){
+			return 'j';
 		}
 		char key = buffer[(read_index++) %(BUFFER_SIZE-1)];
-			return key;
+	return key;
+		
 }

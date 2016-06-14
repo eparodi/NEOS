@@ -1,11 +1,11 @@
 #include "include/videoDriver.h"
 #include "include/strings.h"
 
+
 static char *video = (char *) 0xB8000;
 const int ROWS = 25;
 const int COLS = 80;
 static int cursor = 0;
-
 
 /* print '/0' ended string */
 void print(const char* msg, char colourCode) {
@@ -103,7 +103,7 @@ void supr() {
 }
 
 void printWithLength(const char* msg, int length, char colourCode) {
-	int i = cursor;
+
 	int j = 0;
 	for (; j < length ; cursor++) {
 		video[cursor] = msg[j++];
@@ -112,14 +112,13 @@ void printWithLength(const char* msg, int length, char colourCode) {
 			cursor = 0;
 		}
 	}
-	
 	printCursor();
 }
 
-void clear() {
-	int i;
-	for ( i = 0; i < ROWS * COLS - 1; i++) {
-		print(" ", 0x00);
+void clearScreen() {	
+	int i = 0;
+	while(i < ROWS*COLS*2){
+		video[i++]=0;
 	}
-	cursor = 0;
+	cursor=0;
 }

@@ -1,6 +1,8 @@
 #include "include/types.h"
 #include "include/systemcall.h"
 #include "include/videoDriver.h"
+#include "include/keyboard.h"
+#include "naiveConsole.h"
 
 /* The amount of system call in Linux API. */
 #define SYS_CALL_SIZE 190
@@ -39,7 +41,7 @@ systemcall_interrupt(qword _rdi, qword _rsi, qword _rdx, qword _rcx, qword _rax,
  *		The size of the data copied in bytes, if the read was succesful. Otherwise, it returns 0.
  */
 qword
-read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
+read_sc(qword _rbx, char * _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 /*
  *	The write system call, only works on Standard Input and Error. No file descriptor 
@@ -74,10 +76,17 @@ null_function(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi){
 }
 
 qword
-read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
+read_sc(qword _rbx, char * _rcx, qword _rdx, qword _rdi, qword _rsi ){
+	
+	
+	char a;
+	int i = 0;
 	if ( _rbx == STD_IN ){
-		// TODO: read something.
-		return _rdx;
+		while(_rdx >0){
+		 _rdx--;
+		((char*)_rcx)[i++] =read_from_buffer();		
+		}
+			
 	}
 	return 0 ;
 }

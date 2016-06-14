@@ -1,6 +1,8 @@
 #ifndef VIDEODRIVER_H
 #define VIDEODRIVER_H
 
+
+
 /* print msg ('\0' given string) with given coe color */
 void print(const char* msg, char colourCode);
 
@@ -13,8 +15,7 @@ void printNum(int num, int colorCode);
 /* prints a new line */
 void printNewLine();
 
-/* clear the screen */
-void clear();
+
 
 void backspace();
 void supr();
@@ -22,4 +23,5 @@ void moveCursorUp();
 void moveCursorDown();
 void moveCursorRight();
 void moveCursorLeft();
+void clearScreen();
 #endif

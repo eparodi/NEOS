@@ -29,8 +29,12 @@ write:
 ;		The write system call return value.
 ; -----------------------------------------------------------------------------
 read:
+	push rbp
+	mov rbp,rsp
 	mov rax, 3
 	mov rbx, rdi
 	mov rcx, rsi
 	int 80h
+	mov rsp,rbp
+	pop rbp
 	ret

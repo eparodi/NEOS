@@ -74,7 +74,7 @@ printf( const char * str, void ** args){
 					puts(buf);
 					break;
 				default:
-					break; 
+					break;
 			}
 		}
 	}

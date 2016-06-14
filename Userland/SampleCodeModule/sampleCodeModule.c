@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <shell.h>
 
 char * v = (char*)0xB8000 + 79 * 2;
 
@@ -10,12 +11,21 @@ static int var2 = 0;
 
 int
 main() {
-	//All the following code may be removed 
-	char * test = "test text";
-	printf("The test text is: %s", &test);
+	//All the following code may be removed
+//	clearScreen();
+	char * test = "Eliseo se la come";
+	start_shell();
+//	printf("The test text is: %s", &test);
 	//Test if BSS is properly set up
 	if (var1 == 0 && var2 == 0)
 		return 0xDEADC0DE;
 
 	return 0xDEADBEEF;
+}
+void clearScreen() {
+	char* cursor =(char*)0xB8000;
+	int i = 0;
+	while(i < 80*25*2){
+		cursor[i++]=0;
+	}
 }
