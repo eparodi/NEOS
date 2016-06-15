@@ -91,7 +91,7 @@ void add_to_buffer(){
 int read_from_buffer(int numOfChars,char * str){
 
 		if(read_index == write_index || write_index-read_index < numOfChars){
-			return -1;
+			return 0;
 		}
 		int i = 0;
 		int j = numOfChars;
@@ -101,23 +101,4 @@ int read_from_buffer(int numOfChars,char * str){
 		}
 	return j;
 
-}
-int read_until_enter(char * str){
-	if(read_index == write_index){
-		return 0;
-	}
-	int finished = 0;
-	int i =0;
-	int auxIndex=read_index;
-	while(write_index > auxIndex){
-		char key = buffer[(auxIndex++) %(BUFFER_SIZE-1)];
-		 str[i++] = key;
-		 if(key == '\n'){
-			 write_index = 0;
-			 read_index = 0;
-			 finished = 1;
-			 break;
-		 }
-	}
-	return finished;
 }
