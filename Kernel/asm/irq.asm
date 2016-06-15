@@ -17,14 +17,14 @@ EXTERN irq_handler
 ;	This macro calls the irq_handler function in idt.h
 ; -----------------------------------------------------------------------------
 %macro irqHandlerMaster 1
-
+	push rax
 	mov rdi, %1
 	call irq_handler
 
 	;signal pic
 	mov al, 20h
 	out 20h, al
-
+	pop rax
 	iretq
 
 %endmacro
@@ -36,7 +36,7 @@ SECTION .text
 ; -----------------------------------------------------------------------------
 _irq00Handler:
 	irqHandlerMaster 0
-	
+
 ; -----------------------------------------------------------------------------
 ; 	Keyboard interrupt.
 ; -----------------------------------------------------------------------------
@@ -55,8 +55,8 @@ _irq02Handler:
 _irq03Handler:
 	irqHandlerMaster 3
 
-; -----------------------------------------------------------------------------	
-; 	Serial Port 1 and 3 interrupt.	
+; -----------------------------------------------------------------------------
+; 	Serial Port 1 and 3 interrupt.
 ; -----------------------------------------------------------------------------
 _irq04Handler:
 	irqHandlerMaster 4
@@ -82,10 +82,10 @@ _sti:
 	ret
 
 ; -----------------------------------------------------------------------------
-;	Set a Mask for the Master PIC. A device is enabled if the value of its bit 
+;	Set a Mask for the Master PIC. A device is enabled if the value of its bit
 ;	is 1.
 ;	Parameters:
-;		-rdi: the mask applied. 
+;		-rdi: the mask applied.
 ; -----------------------------------------------------------------------------
 _picMasterMask:
     mov rax, rdi
@@ -93,12 +93,12 @@ _picMasterMask:
     ret
 
 ; -----------------------------------------------------------------------------
-;	Set a Mask for the Slave PIC. A device is enabled if the value of its bit 
+;	Set a Mask for the Slave PIC. A device is enabled if the value of its bit
 ;	is 1.
 ;	Parameters:
-;		-rdi: the mask applied. 
+;		-rdi: the mask applied.
 ; -----------------------------------------------------------------------------
-_picSlaveMask: 
+_picSlaveMask:
     mov     rax, rdi
     out		0A1h,al
     ret

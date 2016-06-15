@@ -27,9 +27,10 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 static int addBuff = -1;
 void
 update_screen(char keyCode){
+	addBuff = -1;
 	// Key Pressed
 	if (keyCode >= 0 && keyCode < mapSize) {
-	addBuff = 1;
+
 		switch(keyCode){
 			case 28: printNewLine();
 				 break;
@@ -54,7 +55,7 @@ update_screen(char keyCode){
 				break;
 			default:
 
-
+			addBuff = 1;
 		//		print_char(keyCode);
 				if (shiftPressed == 1) {
 					print_char(SHIFT_KEYS_VALUES[keyCode][0], 0xffffff);
@@ -75,7 +76,7 @@ update_screen(char keyCode){
 		if (keyCode == 157) {							// Ctrl
 			ctrlPressed *= -1;
 		}
-		addBuff = -1;
+
 	}
 
 }
@@ -84,7 +85,11 @@ void add_to_buffer(){
 	char key_code = _read_keyboard();
 	update_screen(key_code);
 	if(addBuff == 1){
-		buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
+		if(shiftPressed == 1){
+			buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
+		}else{
+			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
+		}
 	}
 }
 
