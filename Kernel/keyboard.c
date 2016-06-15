@@ -86,19 +86,25 @@ void add_to_buffer(){
 	if(addBuff == 1){
 		buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
 	}
+	if ( write_index == BUFFER_SIZE ){
+		write_index = 0;
+	}
 }
 
 int read_from_buffer(int numOfChars,char * str){
-
-		if(read_index == write_index || write_index-read_index < numOfChars){
-			return 0;
-		}
-		int i = 0;
-		int j = numOfChars;
-		while(numOfChars > 0){
-			 str[i++] = buffer[(read_index++) %(BUFFER_SIZE-1)];
-			numOfChars--;
-		}
+	//TODO: change this to take only one key.
+	if(read_index == write_index || write_index-read_index < numOfChars){
+		return 0;
+	}
+	int i = 0;
+	int j = numOfChars;
+	while(numOfChars > 0){
+		 str[i++] = buffer[(read_index++) %(BUFFER_SIZE-1)];
+		numOfChars--;
+	}
+	if ( read_index == BUFFER_SIZE ){
+		read_index = 0;
+	}
 	return j;
 
 }
