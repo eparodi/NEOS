@@ -41,11 +41,11 @@ systemcall_interrupt(qword _rdi, qword _rsi, qword _rdx, qword _rcx, qword _rax,
  *	Return:
  *		The size of the data copied in bytes, if the read was succesful. Otherwise, it returns 0.
  */
-qword
-read_sc(qword _rbx, char * _rcx, qword _rdx, qword _rdi, qword _rsi );
+int
+read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 /*
- *	The write system call, only works on Standard Input and Error. No file descriptor 
+ *	The write system call, only works on Standard Input and Error. No file descriptor
  *  implementation.
  *	Parameters:
  *		-_rbx: file descriptor.
@@ -76,18 +76,11 @@ null_function(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi){
 	return 0;
 }
 
-qword
-read_sc(qword _rbx, char * _rcx, qword _rdx, qword _rdi, qword _rsi ){
-	
-	
-	char a;
-	int i = 0;
+int
+read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	if ( _rbx == STD_IN ){
-		while(_rdx >0){
-		 _rdx--;
-		((char*)_rcx)[i++] =read_from_buffer();		
-		}
-			
+			int j =read_until_enter((char*) _rcx);
+			return j;
 	}
 	return 0 ;
 }

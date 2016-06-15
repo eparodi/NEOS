@@ -1,6 +1,8 @@
 #include "include/keyboard.h"
 #include "include/videoDriver.h"
 #include "include/naiveConsole.h"
+#include "include/vsa_driver.h"
+
 
 static char* KEYS_VALUES[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", 			// 0 - 10
 									"0", "'", "¿", "BACKSPACE", "    ", "q", "w", "e", "r", "t",// 11 - 20
@@ -31,7 +33,7 @@ update_screen(char keyCode){
 		switch(keyCode){
 			case 28: printNewLine();
 				 break;
-			case 14: delete(); 
+			case 14: delete();
 				//backspace();
 				 break;
 			case 42:
@@ -51,11 +53,14 @@ update_screen(char keyCode){
 			case 83: supr();
 				break;
 			default:
+
+
+		//		print_char(keyCode);
 				if (shiftPressed == 1) {
-					print_char(SHIFT_KEYS_VALUES[keyCode], 0xffffff);
+					print_char(SHIFT_KEYS_VALUES[keyCode][0], 0xffffff);
 					//print(SHIFT_KEYS_VALUES[keyCode], 0x07);
 				} else {
-					print_char(KEYS_VALUES[keyCode], 0xffffff);
+					print_char(KEYS_VALUES[keyCode][0], 0xffffff);
 					//print(KEYS_VALUES[keyCode], 0x07);
 				}
 				break;
@@ -78,22 +83,41 @@ update_screen(char keyCode){
 void add_to_buffer(){
 	char key_code = _read_keyboard();
 	update_screen(key_code);
-	printNum(write_index,0x0A);
 	if(addBuff == 1){
-	print("entre",0x07);
-		buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code];
+		buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
 	}
-	print(KEYS_VALUES[key_code],0x07);
-	print(buffer,0x07);
 }
 
-char read_from_buffer(){
-	//	if(read_index > write_index){
-			//todo excepcion o algo;
-		if(read_index == write_index){
-			return 'j';
+int read_from_buffer(int numOfChars,char * str){
+
+		if(read_index == write_index || write_index-read_index < numOfChars){
+			return -1;
 		}
-		char key = buffer[(read_index++) %(BUFFER_SIZE-1)];
-	return key;
-		
+		int i = 0;
+		int j = numOfChars;
+		while(numOfChars > 0){
+			 str[i++] = buffer[(read_index++) %(BUFFER_SIZE-1)];
+			numOfChars--;
+		}
+	return j;
+
+}
+int read_until_enter(char * str){
+	if(read_index == write_index){
+		return 0;
+	}
+	int finished = 0;
+	int i =0;
+	int auxIndex=read_index;
+	while(write_index > auxIndex){
+		char key = buffer[(auxIndex++) %(BUFFER_SIZE-1)];
+		 str[i++] = key;
+		 if(key == '\n'){
+			 write_index = 0;
+			 read_index = 0;
+			 finished = 1;
+			 break;
+		 }
+	}
+	return finished;
 }

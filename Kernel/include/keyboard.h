@@ -6,7 +6,7 @@
 //TODO: add comments.
 
 /*
- * 	Gets the RAW data from the Keyboard. If the data is not read, 
+ * 	Gets the RAW data from the Keyboard. If the data is not read,
  * 	new IRQ's will not be sent.
  *	Return:
  *		The RAW data.
@@ -18,8 +18,10 @@ void
 update_screen(char keyCode);
 void
 add_to_buffer();
-char
-read_from_buffer();
+int
+read_from_buffer(int,char *);
+int
+read_until_enter(char *);
 
 static int ctrlPressed = -1;
 static int shiftPressed = -1;

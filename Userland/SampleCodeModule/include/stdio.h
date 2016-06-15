@@ -43,4 +43,7 @@ read( int handle, char * buffer, unsigned length );
 int
 puts( const char * str );
 
+int
+printf( const char * str, void ** args);
+
 #endif
