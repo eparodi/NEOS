@@ -1,5 +1,6 @@
 #include "include/stdio.h"
 #include "include/math.h"
+#include <stdarg.h>
 
 #define STD_IN 		0
 #define STD_OUT		1
@@ -50,13 +51,15 @@ strlen( const char * str ){
 }
 
 int
-printf( const char * str, void ** args){
+printf( const char * str, ...){
+	va_list args;
 	int ans = 0;
 	int index = 0;
 	int arg = 0;
 	int aux = 0;
 	char * buf;
 	char c;
+	va_start(args, arg);
 	while ( str[index] != '\0' ){
 		c = str[index++];
 		if ( c != '%'){
@@ -66,10 +69,10 @@ printf( const char * str, void ** args){
 			c = str[index++];
 			switch(c){
 				case 's':
-					puts((char *) args[arg++]);
+					puts(va_arg(args, char * ));
 					break;
 				case 'd':
-					aux = i_to_s(buf, ((int *) (args[arg++]))[0], 10);
+					aux = i_to_s(buf, va_arg(args, int *), 10);
 					buf[aux] = 0;
 					puts(buf);
 					break;
@@ -78,5 +81,6 @@ printf( const char * str, void ** args){
 			}
 		}
 	}
+	va_end(args);
 	return ans;
 }

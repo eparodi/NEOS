@@ -43,7 +43,17 @@ read( int handle, char * buffer, unsigned length );
 int
 puts( const char * str );
 
+/*
+ * Implementation
+ * of print formatted, it is
+ * here to use.
+ * Parameters:
+ *		-str: the string with the format.
+ *		-... a list of parameters.
+ * Return:
+ *		The number of parameters.
+ */
 int
-printf( const char * str, void ** args);
+printf( const char * str, ...);
 
 #endif

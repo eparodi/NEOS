@@ -6,8 +6,12 @@ void
 start_shell(){
     unsigned int k;
   //clearScreen();
-  printf("Bienvenido a NEOS, para un breve resumen de las funcionalidades se encuentra disponible el comando help", NULL);
-  char  buffer[100]={0};
+
+
+
+  printf("Bienvenido a NEOS, para un breve resumen de las funcionalidades se encuentra disponible el comando help");
+  char  buffer[10]={0};
+
 
   //printf("Lei: ");
 int exit = -1;
