@@ -159,12 +159,13 @@ delete(){
 
 void deleteLine(int line){
   draw_filled_rectangle(0, line*FONT_HEIGHT + 1  , xres, line*(1+FONT_HEIGHT) + 1,0x000000);
-  buffer_position -= (buffer_position % buffer_max_per_line) + buffer_max_per_line;
+  buffer_position -= (buffer_position % buffer_max_per_line);
 }
 
 void
 nextLine(){
-  if ( buffer_position / buffer_max_per_line == buffer_max_per_column ){
+  //TODO: change -3.
+  if ( buffer_position / buffer_max_per_line == (buffer_max_per_column-3) ){
     move_screen();
   }else{
   buffer_position += buffer_max_per_line - buffer_position % buffer_max_per_line;
@@ -173,18 +174,61 @@ nextLine(){
 
 void
 move_screen(){
-  int x = 0;
-  int y = FONT_HEIGHT;
+  int i = 0;
   int pos1 = 0;
   int pos2 = FONT_HEIGHT * pitch;
-  for ( y; y < yres ; y++){
-    for ( x ; x < xres ; x++ ){
+  for ( i; i < xres * yres - buffer_max_per_line ; i++ ){
       screen[pos1] = screen[pos2];
       screen[pos1+1] = screen[pos2+1];
       screen[pos1+2] = screen[pos2+2];
       pos1 += pixel_width;
       pos2 += pixel_width;
-    }
   }
   deleteLine(buffer_position / buffer_max_per_line );
+}
+
+void
+print_line(int x1, int y1, int x2, int y2, int color ){
+  double dx = x2 - x1;
+  double dy = y2 - y1;
+  int x, y;
+  for ( x = x1; x <= x2 ; x++){
+    y = y1 + dy * (x - x1) / dx;
+    draw_pixel(x, y, color);
+  }
+}
+
+void
+draw_circunference(int x0, int y0, int radius, int color){
+    int x = radius;
+    int y = 0;
+    int err = 0;
+
+    while (x >= y)
+    {
+        draw_pixel(x0 + x, y0 + y, color);
+        draw_pixel(x0 + y, y0 + x, color);
+        draw_pixel(x0 - y, y0 + x, color);
+        draw_pixel(x0 - x, y0 + y, color);
+        draw_pixel(x0 - x, y0 - y, color);
+        draw_pixel(x0 - y, y0 - x, color);
+        draw_pixel(x0 + y, y0 - x, color);
+        draw_pixel(x0 + x, y0 - y, color);
+
+        y += 1;
+        err += 1 + 2*y;
+        if (2*(err-x) + 1 > 0)
+        {
+            x -= 1;
+            err += 1 - 2*x;
+        }
+    }
+}
+
+void
+draw_circle( int x0, int y0, int radius, int color){
+  for(int y=-radius; y<=radius; y++)
+    for(int x=-radius; x<=radius; x++)
+        if(x*x+y*y <= radius*radius)
+            draw_pixel(x0+x, y0+y, color);
 }
