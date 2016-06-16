@@ -35,10 +35,10 @@ update_screen(char keyCode){
 
 		switch(keyCode){
 			case 28: endOfLine=1;
-							counter = 0;
-              addBuff=1;
-              printNewLine();
-              break;
+					counter = 0;
+                    addBuff=1;
+                    nextLine();
+                    break;
 			case 14: if(counter != 0){
 									delete();
 									counter--;

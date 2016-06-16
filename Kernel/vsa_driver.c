@@ -43,7 +43,8 @@ static int pitch;
 static int pixel_width;
 static int xres, yres;
 static int buffer_position = 0;
-static int buffer_max;
+static int buffer_max_per_line;
+static int buffer_max_per_column;
 
 void
 start_video_mode(){
@@ -52,7 +53,8 @@ start_video_mode(){
 	pixel_width = screen_info->bpp / 8;
 	xres = screen_info->Xres;
 	yres = screen_info->Yres;
-  buffer_max = xres/FONT_WIDTH;
+  buffer_max_per_line = xres/FONT_WIDTH;
+  buffer_max_per_column = yres/FONT_HEIGHT;
 }
 
 void
@@ -123,7 +125,7 @@ clear_screen(){
 
 void
 print_char(unsigned char c, int color ){
-  draw_char(c, (buffer_position % buffer_max)*FONT_WIDTH, (buffer_position / buffer_max)*FONT_HEIGHT , color);
+  draw_char(c, (buffer_position % buffer_max_per_line)*FONT_WIDTH, (buffer_position / buffer_max_per_line)*FONT_HEIGHT , color);
   buffer_position++;
 }
 
@@ -148,9 +150,41 @@ print_string_by_length(const char * str, int length , int color){
 void
 delete(){
   if ( buffer_position > 0){
-    int x = ((buffer_position-1) % buffer_max) * FONT_WIDTH;
-    int y = ((buffer_position-1) / buffer_max) * FONT_HEIGHT;
+    int x = ((buffer_position-1) % buffer_max_per_line) * FONT_WIDTH;
+    int y = ((buffer_position-1) / buffer_max_per_line) * FONT_HEIGHT;
     draw_filled_rectangle(x,y,x+FONT_WIDTH,y+FONT_HEIGHT,0x000000);
     buffer_position--;
   }
+}
+
+void deleteLine(int line){
+  draw_filled_rectangle(0, line*FONT_HEIGHT + 1  , xres, line*(1+FONT_HEIGHT) + 1,0x000000);
+  buffer_position -= (buffer_position % buffer_max_per_line) + buffer_max_per_line;
+}
+
+void
+nextLine(){
+  if ( buffer_position / buffer_max_per_line == buffer_max_per_column ){
+    move_screen();
+  }else{
+  buffer_position += buffer_max_per_line - buffer_position % buffer_max_per_line;
+  }
+}
+
+void
+move_screen(){
+  int x = 0;
+  int y = FONT_HEIGHT;
+  int pos1 = 0;
+  int pos2 = FONT_HEIGHT * pitch;
+  for ( y; y < yres ; y++){
+    for ( x ; x < xres ; x++ ){
+      screen[pos1] = screen[pos2];
+      screen[pos1+1] = screen[pos2+1];
+      screen[pos1+2] = screen[pos2+2];
+      pos1 += pixel_width;
+      pos2 += pixel_width;
+    }
+  }
+  deleteLine(buffer_position / buffer_max_per_line );
 }
