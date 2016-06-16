@@ -25,6 +25,7 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 								  	"3", "0", ".", "", "", "", "", "", "", ""}; 				// 81 - 90
 
 static int addBuff = -1;
+static int endOfLine = -1;
 void
 update_screen(char keyCode){
 	addBuff = -1;
@@ -32,8 +33,10 @@ update_screen(char keyCode){
 	if (keyCode >= 0 && keyCode < mapSize) {
 
 		switch(keyCode){
-			case 28: printNewLine();
-				 break;
+			case 28: endOfLine=1;
+                                  addBuff=1;
+                                  printNewLine();
+                                  break;
 			case 14: delete();
 				//backspace();
 				 break;
@@ -113,4 +116,16 @@ int read_from_buffer(int numOfChars,char * str){
 	}
 	return j;
 
+}
+int read_until_enter(char* str){
+   if(endOfLine == 0){
+return 0;
+}
+int i = 0;
+char c;
+do{
+  c = buffer[(read_index++) % (BUFFER_SIZE-1)];
+  str[i++] = c;
+}while(c!= '\n');
+return i;
 }
