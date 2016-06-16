@@ -6,7 +6,7 @@
 
 static char* KEYS_VALUES[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", 			// 0 - 10
 									"0", "'", "¿", "BACKSPACE", "    ", "q", "w", "e", "r", "t",// 11 - 20
-								  	"y", "u", "i", "o", "p", "´", "+", "", "", "a",				// 21 - 30
+								  	"y", "u", "i", "o", "p", "´", "+", "\n", "", "a",				// 21 - 30
 									"s", "d", "f", "g", "h", "j", "k", "l", "", "{", 			// 31 - 40
 								  	"|", "LSHIFT", "}", "z", "x", "c", "v", "b", "n", "m",  	// 41 - 50
 								  	",", ".", "-", "", "*", "ALT", " ", "", "", "",				// 51 - 60
@@ -26,6 +26,7 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 
 static int addBuff = -1;
 static int endOfLine = -1;
+static int counter = 0;
 void
 update_screen(char keyCode){
 	addBuff = -1;
@@ -34,10 +35,17 @@ update_screen(char keyCode){
 
 		switch(keyCode){
 			case 28: endOfLine=1;
-                                  addBuff=1;
-                                  printNewLine();
-                                  break;
-			case 14: delete();
+							counter = 0;
+              addBuff=1;
+              printNewLine();
+              break;
+			case 14: if(counter != 0){
+									delete();
+									counter--;
+									if(write_index != 0){
+										write_index--;
+									}
+								}
 				//backspace();
 				 break;
 			case 42:
@@ -88,6 +96,9 @@ void add_to_buffer(){
 	char key_code = _read_keyboard();
 	update_screen(key_code);
 	if(addBuff == 1){
+		if(key_code != 28){
+		counter++;
+	}
 		if(shiftPressed == 1){
 			buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
 		}else{
@@ -104,7 +115,7 @@ int read_from_buffer(int numOfChars,char * str){
 	if(read_index == write_index || write_index-read_index < numOfChars){
 		return 0;
 	}
-	
+
 	int i = 0;
 	int j = numOfChars;
 	while(numOfChars > 0){
@@ -118,14 +129,15 @@ int read_from_buffer(int numOfChars,char * str){
 
 }
 int read_until_enter(char* str){
-   if(endOfLine == 0){
-return 0;
-}
-int i = 0;
-char c;
-do{
-  c = buffer[(read_index++) % (BUFFER_SIZE-1)];
-  str[i++] = c;
-}while(c!= '\n');
-return i;
-}
+   if(endOfLine != 1){
+		 return 0;
+	 }
+	 int i = 0;
+	 char c;
+	 do{
+  	c = buffer[(read_index++) % (BUFFER_SIZE-1)];
+  	str[i++] = c;
+	}while(c!= '\n');
+endOfLine == -1;
+	return i;
+	}
