@@ -101,6 +101,7 @@ int read_from_buffer(int numOfChars,char * str){
 	if(read_index == write_index || write_index-read_index < numOfChars){
 		return 0;
 	}
+	
 	int i = 0;
 	int j = numOfChars;
 	while(numOfChars > 0){

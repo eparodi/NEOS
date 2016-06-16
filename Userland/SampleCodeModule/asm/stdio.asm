@@ -13,10 +13,14 @@ SECTION .text
 ;		The write system call return value.
 ; -----------------------------------------------------------------------------
 write:
+push rbp
+mov rbp,rsp
 	mov rax, 4
 	mov rbx, rdi
 	mov rcx, rsi
 	int 80h
+	mov rsp,rbp
+	pop rbp
 	ret
 
 ; -----------------------------------------------------------------------------

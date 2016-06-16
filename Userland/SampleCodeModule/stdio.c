@@ -18,11 +18,24 @@ strncmp( const char * str1 , const char * str2 , int length ){
 	int i, aux;
 	for ( i = 0; i < length ; i++ ){
 		aux = str1[i] - str2[i];
-		if ( !aux ){
+		if ( aux ){
 			return aux;
 		}
 	}
 	return 0;
+}
+
+int strcmp(const char * str1,const char * str2){
+	int i, aux;
+	for ( i = 0; str1[i]!=0 || str2[i]!=0 ; i++ ){
+		aux = str1[i] - str2[i];
+		if ( aux ){
+			return aux;
+		}
+
+	}
+
+	return str1[i]-str2[i];
 }
 
 int
@@ -30,12 +43,20 @@ putchar( char letter ){
 	write(STD_OUT, &letter,1);
 	return letter;
 }
-
+static int k = 0;
 int
 getc(){
-	char ans;
-	read(STD_IN, &ans, 1);
-	return ans;
+	char ans[2]={0};
+	unsigned int c =0;
+
+	do{
+		c = read(0, ans, 1);
+		if(k>0){
+	//	printf("%d",c );
+	}
+	}while(c== 0);
+//	printf("mira vos %s",ans);
+	return ans[0];
 }
 
 int
@@ -49,7 +70,7 @@ strlen( const char * str ){
 	while( str[size++] != '\0' ){}
 	return size-1;
 }
-
+/* %c y %d no andan ni print ni scan*/
 int
 printf( const char * str, ...){
 	va_list args;
@@ -70,6 +91,56 @@ printf( const char * str, ...){
 			switch(c){
 				case 's':
 					puts(va_arg(args, char * ));
+					break;
+					case 'c':
+						putchar(va_arg(args,char));
+						break;
+				case 'd':
+					aux = i_to_s(buf, va_arg(args, int *), 10);
+					buf[aux] = 0;
+					puts(buf);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	va_end(args);
+	return ans;
+}
+
+int
+scanf( const char * str, ...){
+	va_list args;
+	int ans = 0;
+	int index = 0;
+	int arg = 0;
+	int aux = 0;
+	int i ;
+	int k;
+	char * buf;
+	char c;
+	va_start(args, arg);
+	while ( str[index] != '\0' ){
+		c = str[index++];
+		if ( c != '%'){
+			putchar(c);
+		}else{
+			ans++;
+			c = str[index++];
+			switch(c){
+				case 's':
+					i=0;
+					char * v = va_arg(args, char * );
+					do{
+						k=getc();
+						if(k!='z'){
+							v[i++]=k;
+						}else{
+							v[i++]=0;
+						}
+				}while(k!='z');
+
 					break;
 				case 'd':
 					aux = i_to_s(buf, va_arg(args, int *), 10);

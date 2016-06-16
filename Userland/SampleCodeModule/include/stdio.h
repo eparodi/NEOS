@@ -55,5 +55,17 @@ puts( const char * str );
  */
 int
 printf( const char * str, ...);
-
+/*
+ *Compares two strings
+ *Parameters:
+ * str1 and str2
+ *Return : 1 if str1 is lexically greater than str 2, -1 if str2 is greater than
+ * str1 and 0 if they are equal.
+ */
+int
+strcmp(const char * str1,const char * str2);
+int
+scanf( const char * str, ...);
+int
+getc();
 #endif
