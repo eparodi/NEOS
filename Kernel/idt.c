@@ -2,6 +2,7 @@
 #include "include/idt.h"
 #include "include/descriptors.h"
 #include "include/irq.h"
+#include "include/vsa_driver.h"
 
 #include "include/keyboard.h"
 #include "include/systemcall.h"
@@ -24,11 +25,13 @@ setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
 
 void
 irq_handler(int irq_number){
+  static char a='0';
   //TODO change to array of pointer to function.
   switch( irq_number ){
     case 0x00:
       // Set Timer Tick Interrupt.
-      break;
+        print_char('A',0xFF00FF);
+        break;
     case 0x01:
       add_to_buffer();
       //update_screen();

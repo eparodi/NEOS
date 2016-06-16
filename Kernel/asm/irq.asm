@@ -18,12 +18,26 @@ EXTERN irq_handler
 ; -----------------------------------------------------------------------------
 %macro irqHandlerMaster 1
 	push rax
+	push rbx
+	push rcx
+	push rdx
+	push rsi
+	push rdi
+	push r8
+	push r9
 	mov rdi, %1
 	call irq_handler
 
 	;signal pic
 	mov al, 20h
 	out 20h, al
+	pop r9
+	pop r8
+	pop rdi
+	pop rsi
+	pop rdx
+	pop rcx
+	pop rbx
 	pop rax
 	iretq
 

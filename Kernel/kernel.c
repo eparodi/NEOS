@@ -88,9 +88,10 @@ int main()
 	ncNewline();
 	ncPrint("[Kernel Main]");
 	ncNewline();
+	start_video_mode();
+
 	ncPrint("Loading Interrupt Descriptor Table: ");
 	set_idt();
-	start_video_mode();
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");
