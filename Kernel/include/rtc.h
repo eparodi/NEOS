@@ -73,4 +73,14 @@ get_hours();
  boolean
  is_updating();
 
+/*
+ *	Gets the interpreted data from the RTC.
+ *	Parameters:
+ *		-option: the number associated with the data wanted to be read.
+ *	Return:
+ *		The interpreted data.
+ */
+ int
+ get_time_data(int option);
+
 #endif

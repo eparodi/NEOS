@@ -112,13 +112,6 @@ int main()
 
 	ncPrint("[Finished]");
 
-	/*
-	for ( int y = 0 ; ; y++){
-		draw_pixel(y,y,y);
-	}*/
-
-
-
 	while(1){
 		_hlt();
 	}

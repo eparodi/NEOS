@@ -41,6 +41,15 @@ bcd_to_normal(word data){
 	return aux + data;
 }
 
-word normal_to_bcd(word data){
+word
+normal_to_bcd(word data){
 	return (data % 10) + (data / 10) * 0xFF ;
+}
+
+int
+get_time_data(int option){
+	if ( option < 0 || option > 10 ){
+		return -1;
+	}
+	return bcd_to_normal(_get_rtc_data(option));
 }

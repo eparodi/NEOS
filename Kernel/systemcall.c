@@ -4,6 +4,7 @@
 #include "include/keyboard.h"
 #include "include/naiveConsole.h"
 #include "include/vsa_driver.h"
+#include "include/rtc.h"
 
 /* The amount of system call in Linux API. */
 #define SYS_CALL_SIZE 190
@@ -51,9 +52,21 @@ read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
  *		-_rbx: file descriptor.
  *		-_rcx: buffer.
  *		-_rdx: number of bytes copied.
+ *	Return:
+ *		-1 if there was an error writing, otherwise the size of the written data.
  */
 qword
 write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
+
+/*
+ *	A time system call. Reads the time, and returns it.
+ *	Parameters:
+ *		-_rbx: option to read. (See rtc.h)
+ *	Return:
+ *		The time required. -1 if there was an error.
+ */
+ int
+ time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 void
 start_system_call(){
@@ -63,6 +76,7 @@ start_system_call(){
 	}
 	syscall_vector[3] = &read_sc;
 	syscall_vector[4] = &write_sc;
+	syscall_vector[13] = &time_sc;
 	//TODO: add system calls to the vector.
 }
 
@@ -98,3 +112,8 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	}
 	return -1 ;
 }
+
+ int
+ time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
+ 	return get_time_data(_rbx);
+ }
