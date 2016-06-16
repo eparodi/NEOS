@@ -112,13 +112,16 @@ void add_to_buffer(){
 
 int read_from_buffer(int numOfChars,char * str){
 	//TODO: change this to take only one key.
-	if(read_index == write_index || write_index-read_index < numOfChars){
+	if(read_index == write_index || write_index-read_index < numOfChars || endOfLine != 1){
 		return 0;
 	}
 
 	int i = 0;
 	int j = numOfChars;
 	while(numOfChars > 0){
+		if(buffer[read_index % (BUFFER_SIZE-1)] == '\n'){
+			endOfLine == -1;
+		}
 		 str[i++] = buffer[(read_index++) %(BUFFER_SIZE-1)];
 		numOfChars--;
 	}
@@ -128,16 +131,3 @@ int read_from_buffer(int numOfChars,char * str){
 	return j;
 
 }
-int read_until_enter(char* str){
-   if(endOfLine != 1){
-		 return 0;
-	 }
-	 int i = 0;
-	 char c;
-	 do{
-  	c = buffer[(read_index++) % (BUFFER_SIZE-1)];
-  	str[i++] = c;
-	}while(c!= '\n');
-endOfLine == -1;
-	return i;
-	}

@@ -46,17 +46,13 @@ putchar( char letter ){
 static int k = 0;
 int
 getc(){
-	char ans[2]={0};
+	char ans;
 	unsigned int c =0;
 
 	do{
-		c = read(0, ans, 1);
-		if(k>0){
-	//	printf("%d",c );
-	}
-	}while(c== 0);
-//	printf("mira vos %s",ans);
-	return ans[0];
+		c = read(0, &ans, 1);
+	}while(c == 0);
+	return ans;
 }
 
 int
@@ -117,14 +113,14 @@ scanf( const char * str, ...){
 	int arg = 0;
 	int aux = 0;
 	int i ;
-	int k;
-	char * buf;
+	int k=0;
+	char buf[30];
 	char c;
 	va_start(args, arg);
 	while ( str[index] != '\0' ){
 		c = str[index++];
 		if ( c != '%'){
-			putchar(c);
+		printf("Formato invalido");
 		}else{
 			ans++;
 			c = str[index++];
@@ -132,18 +128,22 @@ scanf( const char * str, ...){
 				case 's':
 					i=0;
 					char * v = va_arg(args, char * );
+
 					do{
+						//	printf("%d",k );
+
+
+
 						k=getc();
-						if(k!='z'){
+						if(k!='\n'){
 							v[i++]=k;
 						}else{
 							v[i++]=0;
 						}
-				}while(k!='z');
-
+				}while(k!= '\n');
 					break;
 				case 'd':
-					aux = i_to_s(buf, va_arg(args, int), 10);
+				//toDO s_to_i	aux = i_to_s(buf, va_arg(args, int), 10);
 					buf[aux] = 0;
 					puts(buf);
 					break;
