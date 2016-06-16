@@ -35,7 +35,7 @@ update_screen(char keyCode){
 		switch(keyCode){
 			case 28: endOfLine=1;
                                   addBuff=1;
-                                  printNewLine();
+                                  nextLine();
                                   break;
 			case 14: delete();
 				//backspace();

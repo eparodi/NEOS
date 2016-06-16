@@ -89,8 +89,8 @@ int main()
 	ncPrint("[Kernel Main]");
 	ncNewline();
 	ncPrint("Loading Interrupt Descriptor Table: ");
-	set_idt();
 	start_video_mode();
+	set_idt();
 	
 	ncPrint("Finished.");
 	ncNewline();
