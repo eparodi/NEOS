@@ -16,7 +16,7 @@ static char* KEYS_VALUES[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8",
 
 static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/", "(", ")", 	// 0 - 10
 									"=", "?", "¡", "BACKSPACE", "    ", "Q", "W", "E", "R", "T",// 11 - 20
-								  	"Y", "U", "I", "O", "P", "¨", "*", "", "", "A",				// 21 - 30
+								  	"Y", "U", "I", "O", "P", "¨", "*", "\n", "", "A",				// 21 - 30
 									"S", "D", "F", "G", "H", "J", "K", "L", "", "[", 			// 31 - 40
 								  	"°", "LSHIFT", "]", "Z", "X", "C", "V", "B", "N", "M",  		// 41 - 50
 								  	";", ":", "_", "", "*", "ALT", " ", "", "", "",				// 51 - 60
@@ -28,18 +28,18 @@ static int addBuff = -1;
 static int endOfLine = -1;
 static int counter = 0;
 void
-update_screen(char keyCode){
+update_screen(unsigned char keyCode){
 	addBuff = -1;
 	// Key Pressed
 	if (keyCode >= 0 && keyCode < mapSize) {
 
 		switch(keyCode){
 			case 28: endOfLine=1;
-					counter = 0;
+									counter = 0;
                     addBuff=1;
                     nextLine();
                     break;
-			case 14: if(counter != 0){
+			case 14: if(counter > 0){
 									delete();
 									counter--;
 									if(write_index != 0){
@@ -49,10 +49,15 @@ update_screen(char keyCode){
 				//backspace();
 				 break;
 			case 42:
+			shiftLeftPressed*=-1;
+			break;
 			case 54:
-			case 58: shiftPressed*=-1;
+			shiftRightPressed*=-1;
+			break;
+			case 58:
+					bloqMayusPressed*=-1;
 				 break;
-			case 29: ctrlPressed *= -1;
+			case 29:
 				  break;
 			case 72: moveCursorUp();
 				break;
@@ -68,7 +73,7 @@ update_screen(char keyCode){
 
 			addBuff = 1;
 		//		print_char(keyCode);
-				if (shiftPressed == 1) {
+				if (shiftRightPressed == 1 || shiftLeftPressed == 1 || bloqMayusPressed == 1) {
 					print_char(SHIFT_KEYS_VALUES[keyCode][0], 0xffffff);
 					//print(SHIFT_KEYS_VALUES[keyCode], 0x07);
 				} else {
@@ -81,11 +86,10 @@ update_screen(char keyCode){
 
 	// Key Released
  else {
-		if (keyCode == 170 || keyCode == 182) {			// L/R Shift
-			shiftPressed *= -1;
-		}
-		if (keyCode == 157) {							// Ctrl
-			ctrlPressed *= -1;
+		if (keyCode == 170){	// L/R Shift
+			shiftLeftPressed *= -1;
+		}if(keyCode == 182) {
+			shiftRightPressed *= -1;
 		}
 
 	}
@@ -99,7 +103,7 @@ void add_to_buffer(){
 		if(key_code != 28){
 		counter++;
 	}
-		if(shiftPressed == 1){
+		if(shiftRightPressed == 1 || shiftLeftPressed == 1 || bloqMayusPressed == 1){
 			buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
 		}else{
 			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
@@ -118,9 +122,9 @@ int read_from_buffer(int numOfChars,char * str){
 
 	int i = 0;
 	int j = numOfChars;
-	while(numOfChars > 0){
+	while(numOfChars > 0 && endOfLine != -1){
 		if(buffer[read_index % (BUFFER_SIZE-1)] == '\n'){
-			endOfLine == -1;
+			endOfLine = -1;
 		}
 		 str[i++] = buffer[(read_index++) %(BUFFER_SIZE-1)];
 		numOfChars--;

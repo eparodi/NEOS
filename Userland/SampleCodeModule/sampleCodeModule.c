@@ -19,11 +19,3 @@ main() {
 
 	return 0xDEADBEEF;
 }
-
-void clearScreen() {
-	char* cursor =(char*)0xB8000;
-	int i = 0;
-	while(i < 80*25*2){
-		cursor[i++]=0;
-	}
-}
