@@ -3,7 +3,7 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
-//#include <vsa_driver.h>
+#include <vsa_driver.h>
 
 #include <idt.h>
 #include <rtc.h>
@@ -88,10 +88,9 @@ int main()
 	ncNewline();
 	ncPrint("[Kernel Main]");
 	ncNewline();
-	start_video_mode();
-
 	ncPrint("Loading Interrupt Descriptor Table: ");
 	set_idt();
+	start_video_mode();
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");

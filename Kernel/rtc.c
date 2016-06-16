@@ -37,7 +37,7 @@ word
 bcd_to_normal(word data){
 	word aux = data;
 	aux = aux & 0xFF; // get the first digit.
-	data = (data >> 8) * 10;
+	data = (data >> 4) * 10;
 	return aux + data;
 }
 

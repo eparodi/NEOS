@@ -13,7 +13,7 @@ _get_rtc_data:
 
 	mov rax, rdi
 	out 70h, al
-	in ax, 71
+	in ax, 71h
 	
 	ret
 

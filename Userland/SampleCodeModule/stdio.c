@@ -78,7 +78,7 @@ printf( const char * str, ...){
 	int index = 0;
 	int arg = 0;
 	int aux = 0;
-	char * buf;
+	char buf[30];
 	char c;
 	va_start(args, arg);
 	while ( str[index] != '\0' ){
@@ -92,11 +92,11 @@ printf( const char * str, ...){
 				case 's':
 					puts(va_arg(args, char * ));
 					break;
-					case 'c':
-						putchar(va_arg(args,char));
-						break;
+				case 'c':
+					putchar(va_arg(args,char));
+					break;
 				case 'd':
-					aux = i_to_s(buf, va_arg(args, int *), 10);
+					aux = i_to_s(buf, va_arg(args, int), 10);
 					buf[aux] = 0;
 					puts(buf);
 					break;
@@ -143,7 +143,7 @@ scanf( const char * str, ...){
 
 					break;
 				case 'd':
-					aux = i_to_s(buf, va_arg(args, int *), 10);
+					aux = i_to_s(buf, va_arg(args, int), 10);
 					buf[aux] = 0;
 					puts(buf);
 					break;
