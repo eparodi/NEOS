@@ -15,15 +15,17 @@ byte
 _read_keyboard();
 
 void
-update_screen(char keyCode);
+update_screen(unsigned char keyCode);
 void
 add_to_buffer();
 int
 read_from_buffer(int,char *);
 
 
-static int ctrlPressed = -1;
-static int shiftPressed = -1;
+
+static int shiftRightPressed = -1;
+static int shiftLeftPressed = -1;
+static int bloqMayusPressed = -1;
 static int altPressed = -1;
 static int mapSize = 90;
 static char buffer[BUFFER_SIZE]={0};

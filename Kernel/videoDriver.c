@@ -114,11 +114,3 @@ void printWithLength(const char* msg, int length, char colourCode) {
 	}
 	printCursor();
 }
-
-void clearScreen() {	
-	int i = 0;
-	while(i < ROWS*COLS*2){
-		video[i++]=0;
-	}
-	cursor=0;
-}

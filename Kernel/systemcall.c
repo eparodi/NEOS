@@ -95,7 +95,9 @@ int
 read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 
 	if ( _rbx == STD_IN ){
-			int j =read_from_buffer(_rdx,(char*) _rcx);
+		int j;
+
+			 j =read_from_buffer(_rdx,(char*) _rcx);
 			return j;
 	}
 	return 0 ;

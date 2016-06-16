@@ -16,18 +16,18 @@ typedef struct{
   //VBE_FAR(realFctPtr);
   uint32_t farptr;
   uint16_t pitch; // bytes per scanline
- 
+
   uint16_t Xres, Yres;
   uint8_t Wchar, Ychar, planes, bpp, banks;
   uint8_t memory_model, bank_size, image_pages;
   uint8_t reserved0;
- 
+
   uint8_t red_mask, red_position;
   uint8_t green_mask, green_position;
   uint8_t blue_mask, blue_position;
   uint8_t rsv_mask, rsv_position;
   uint8_t directcolor_attributes;
- 
+
   uint32_t physbase;  // your LFB (Linear Framebuffer) address ;)
   uint32_t reserved1;
   uint16_t reserved2;
@@ -72,7 +72,7 @@ draw_char(unsigned char c, int x, int y, int color){
 	int cx,cy;
 	int mask[8]={1,2,4,8,16,32,64,128};
 	unsigned char * glyph=font[c-32];
- 
+
 	for(cy=0;cy<13;cy++){
 		for(cx=0;cx<8;cx++){
 			if(glyph[cy]&mask[cx]){
@@ -125,6 +125,10 @@ clear_screen(){
 
 void
 print_char(unsigned char c, int color ){
+  if(c =='\n'){
+    nextLine();
+    return;
+  }
   draw_char(c, (buffer_position % buffer_max_per_line)*FONT_WIDTH, (buffer_position / buffer_max_per_line)*FONT_HEIGHT , color);
   buffer_position++;
 }
@@ -187,6 +191,7 @@ move_screen(){
   deleteLine(buffer_position / buffer_max_per_line );
 }
 
+
 void
 print_line(int x1, int y1, int x2, int y2, int color ){
   double dx = x2 - x1;
@@ -232,3 +237,4 @@ draw_circle( int x0, int y0, int radius, int color){
         if(x*x+y*y <= radius*radius)
             draw_pixel(x0+x, y0+y, color);
 }
+
