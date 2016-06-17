@@ -80,7 +80,7 @@ get_hours();
  *	Return:
  *		The interpreted data.
  */
- int
+int
  get_time_data(int option);
 
 #endif

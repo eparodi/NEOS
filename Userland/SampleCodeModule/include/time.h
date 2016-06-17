@@ -2,19 +2,11 @@
 #define TIME_H
 
 /*
- *	Returns the interpreted data from the RTC.
- *	Paramaters:
- *		-option: the id of the data requested. (See rtc.h)
+ *	Returns a String with the actual hour.
  *	Return:
- *		The time data requested.
+ *		A String with the actual hour.
  */
-int
-time(int option);
-
-/*
- *
- */
-int
+char *
 get_hour();
 
 #endif

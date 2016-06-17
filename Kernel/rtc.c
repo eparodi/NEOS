@@ -35,10 +35,12 @@ is_updating(){
 
 word
 bcd_to_normal(word data){
-	word aux = data;
-	aux = aux & 0xFF; // get the first digit.
-	data = (data >> 4) * 10;
-	return aux + data;
+	word ans = ( (data & 0xF0) >> 1) + ( (data & 0xF0) >> 3) + (data & 0xf);
+	word d1 = data;
+	word d2 = data;
+	d1 = d1 & 0x0F; // get the first digit.
+	d2 = (d2 & 0xF0) * 10; //get the second digit.
+	return ans;
 }
 
 word

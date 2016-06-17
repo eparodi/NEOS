@@ -67,7 +67,7 @@ strlen( const char * str ){
 	while( str[size++] != '\0' ){}
 	return size-1;
 }
-/* %c y %d no andan ni print ni scan*/
+
 int
 printf( const char * str, ...){
 	va_list args;
@@ -106,6 +106,7 @@ printf( const char * str, ...){
 	return ans;
 }
 
+/* %c y %d no andan scan*/
 int
 scanf( const char * str, ...){
 	va_list args;
