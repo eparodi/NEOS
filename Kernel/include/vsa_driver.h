@@ -96,4 +96,7 @@ print_string_by_length(char * str, int length , int color);
 void
 delete();
 
+/*
+ * Draws a rectangle
+ */
 #endif

@@ -8,6 +8,7 @@
 #include <idt.h>
 #include <rtc.h>
 #include  "include/timerTick.h"
+#include "include/fractal.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -90,8 +91,10 @@ int main()
 	ncPrint("[Kernel Main]");
 	ncNewline();
 	ncPrint("Loading Interrupt Descriptor Table: ");
-	start_video_mode();
+	setTick();
 	set_idt();
+	start_video_mode();
+	drawFractal(2,2,768);
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");

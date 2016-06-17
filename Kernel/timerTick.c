@@ -1,7 +1,6 @@
 #include "include/timerTick.h"
 #include "include/vsa_driver.h"
 
-
 unsigned int cdown[MAXCOUNTERS];
 
 
