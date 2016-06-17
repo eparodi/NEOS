@@ -1,4 +1,4 @@
-#ifndef NAIVE_CONSOLE_H
+#ifndef NAIVE_CONSOLE_Hc
 #define NAIVE_CONSOLE_H
 
 #include <stdint.h>

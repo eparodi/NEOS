@@ -3,7 +3,7 @@
 #include "include/descriptors.h"
 #include "include/irq.h"
 #include "include/vsa_driver.h"
-
+#include "include/timerTick.h"
 #include "include/keyboard.h"
 #include "include/systemcall.h"
 
@@ -30,7 +30,8 @@ irq_handler(int irq_number){
   switch( irq_number ){
     case 0x00:
       // Set Timer Tick Interrupt.
-        break;
+      tick();
+          break;
     case 0x01:
       add_to_buffer();
       //update_screen();

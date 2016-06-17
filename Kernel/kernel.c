@@ -7,6 +7,7 @@
 
 #include <idt.h>
 #include <rtc.h>
+#include  "include/timerTick.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -89,10 +90,8 @@ int main()
 	ncPrint("[Kernel Main]");
 	ncNewline();
 	ncPrint("Loading Interrupt Descriptor Table: ");
-
 	start_video_mode();
 	set_idt();
-
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");
@@ -102,7 +101,6 @@ int main()
 	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
 	ncNewline();
 	ncNewline();
-
 	ncPrint("  Sample data module at 0x");
 	ncPrintHex((uint64_t)sampleDataModuleAddress);
 	ncNewline();
@@ -111,7 +109,6 @@ int main()
 	ncNewline();
 
 	ncPrint("[Finished]");
-
 	while(1){
 		_hlt();
 	}
