@@ -1,9 +1,7 @@
 #include "include/timerTick.h"
 #include "include/vsa_driver.h"
 
-unsigned int cdown[MAXCOUNTERS];
-
-
+unsigned int cdown[MAXCOUNTERS]={0};
 
 
 int addTimer(int r){
@@ -25,7 +23,7 @@ void sleep(int time){
     int x=addTimer(time);
     if(x==NOT) return;
     while(getTimer(x)>0)
-        //_hlt(); NO SE PORQUE PERO SI LO PONGO CRASHEA,PRUEBENLO
+        //_hlt(); //NO SE PORQUE PERO SI LO PONGO CRASHEA,PRUEBENLO
     return;
 }
 
