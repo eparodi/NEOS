@@ -1,6 +1,6 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
-#define BUFFER_SIZE 100
+#define BUFFER_SIZE 1000
 #include "types.h"
 
 //TODO: add comments.
@@ -29,8 +29,8 @@ static int bloqMayusPressed = -1;
 static int altPressed = -1;
 static int mapSize = 90;
 static char buffer[BUFFER_SIZE]={0};
-static int read_index = 0;
-static int write_index = 0;
+static unsigned int read_index = 0;
+static unsigned int write_index = 0;
 
 
 

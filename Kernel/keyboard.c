@@ -26,7 +26,7 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 
 static int addBuff = -1;
 static int endOfLine = -1;
-static int counter = 0;
+static unsigned int counter = 0;
 void
 update_screen(unsigned char keyCode){
 	addBuff = -1;
@@ -73,13 +73,17 @@ update_screen(unsigned char keyCode){
 
 			addBuff = 1;
 		//		print_char(keyCode);
-				if (shiftRightPressed == 1 || shiftLeftPressed == 1 || bloqMayusPressed == 1) {
-					print_char(SHIFT_KEYS_VALUES[keyCode][0], 0xffffff);
-					//print(SHIFT_KEYS_VALUES[keyCode], 0x07);
-				} else {
-					print_char(KEYS_VALUES[keyCode][0], 0xffffff);
-					//print(KEYS_VALUES[keyCode], 0x07);
-				}
+		if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
+			if(bloqMayusPressed == -1){
+				print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
+			}else{
+					print_char(KEYS_VALUES[keyCode][0],0xffffff);
+			}
+		}else if(bloqMayusPressed == 1){
+				print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
+		}else{
+			print_char(KEYS_VALUES[keyCode][0],0xffffff);
+		}
 				break;
 		}
 	}
@@ -103,8 +107,14 @@ void add_to_buffer(){
 		if(key_code != 28){
 		counter++;
 	}
-		if(shiftRightPressed == 1 || shiftLeftPressed == 1 || bloqMayusPressed == 1){
-			buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
+		if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
+			if(bloqMayusPressed == -1){
+				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
+			}else{
+				buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
+			}
+		}else if(bloqMayusPressed == 1){
+				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
 		}else{
 			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
 		}
@@ -119,7 +129,6 @@ int read_from_buffer(int numOfChars,char * str){
 	if(read_index == write_index || write_index-read_index < numOfChars || endOfLine != 1){
 		return 0;
 	}
-
 	int i = 0;
 	int j = numOfChars;
 	while(numOfChars > 0 && endOfLine != -1){

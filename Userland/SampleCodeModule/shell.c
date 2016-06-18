@@ -5,10 +5,12 @@
 
 void
 start_shell(){
-  char * buffer = malloc(1000);
+//  char * buffer = malloc(1000);
+char buffer[1000]={0};
   buffer[0] = 0;
   int exit = -1;
   int i = 6;
+  int x,y,size;
 	do{
     printf("$> ");
     scanf("%s",buffer);
@@ -23,7 +25,19 @@ start_shell(){
     }else if(strcmp(buffer,"date")==0){
       printf("%s\n", get_date());
     }else if(strcmp(buffer,"fractal")==0){
-      draw_fractal(2,2,768);
+      printf("Ingrese la posicion en x:\n");
+      scanf("%d",&x );
+      printf("Ingrese la posicion en y:\n");
+      scanf("%d",&y );
+      printf("Ingrese el tamaño:\n");
+      scanf("%d",&size);
+      cls();
+      draw_fractal(x,y,size);
+      printf("Ingrese quit y presione enter para volver a la consola\n");
+      do{
+        scanf("%s",buffer);
+      }while(strcmp("quit",buffer)!= 0);
+      cls();
     }else if(strcmp(buffer,"clear")==0){
       cls();
     }else if(strcmp(buffer,"sleep")==0){
