@@ -6,7 +6,6 @@
 typedef void (*event)() ;
 
 static unsigned int* cdown[MAXCOUNTERS];
-static qword counter = 0;
 
 //static event timerEvents[MAXCOUNTERS];
 //static int alarmEvents[MAXCOUNTERS];
@@ -21,13 +20,13 @@ static qword counter = 0;
 //        if(counter % alarmEvents[j]==0) timerEvents[j]();
 //    }
 //}
+
 void rem(int i){
     cdown[i]--;
 }
 
 
 void tick(){
-    counter++;
     int flag=0;
     for(int i=0;i<MAXCOUNTERS;i++){
         if(cdown[i]>0){
@@ -92,4 +91,4 @@ void sleep(int t){
 //            break;
 //        }
 //    }
-//}
+/*}*/
