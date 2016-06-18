@@ -8,7 +8,7 @@ start_shell(){
   char * buffer = malloc(1000);
   buffer[0] = 0;
   int exit = -1;
-  int i = 0;
+  int i = 6;
 	do{
     printf("$> ");
     scanf("%s",buffer);

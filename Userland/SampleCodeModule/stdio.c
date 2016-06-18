@@ -116,10 +116,13 @@ scanf( const char * str, ...){
 	int aux = 0;
 	int i ;
 	int k=0;
-	char buf[30];
+	int ax;
+	char buf[30]={0};
+		char num[1000]={0};
 	char c;
 	va_start(args, arg);
-	while ( str[index] != '\0' ){
+	while ( str[index] != 0){
+
 		c = str[index++];
 		if ( c != '%'){
 		printf("Formato invalido");
@@ -142,14 +145,27 @@ scanf( const char * str, ...){
 					break;
 				case 'd':
 				//toDO s_to_i	aux = i_to_s(buf, va_arg(args, int), 10);
-					buf[aux] = 0;
-					puts(buf);
+				i=0;
+				do{
+					k=getc();
+					if(k!='\n'){
+						num[i++]=k;
+					}else{
+						num[i++]=0;
+					}
+				//	printf("paso" );
+			}while(k!= '\n');
+			int * numb =va_arg(args,int*);
+
+			numb[0]=s_to_i(num);
+
 					break;
 				default:
 					break;
 			}
 		}
 	}
+
 	va_end(args);
 	return ans;
 }
