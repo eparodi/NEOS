@@ -26,6 +26,9 @@ start_shell(){
       printf("%s\n", get_date());
     }else if(strcmp(buffer,"fractal")==0){
       draw_fractal(2,2,768);
+    }else if(strcmp(buffer,"sleep")==0){
+      sleep(10000);
+      printf("Dormi 10 segundos.\n");
     }
  }  while(exit == -1);
   printf(" nos fuimos ");

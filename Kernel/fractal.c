@@ -39,7 +39,7 @@ void drawFractal(int x, int y,unsigned int siz){
             }
         }
         
-        sleep(10);
+        sleep(100);
 
     }
 
