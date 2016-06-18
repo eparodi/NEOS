@@ -25,7 +25,7 @@ void sleep(int time){
     int x=addTimer(time);
     if(x==NOT) return;
     while(getTimer(x)>0)
-        _hlt();
+        //_hlt(); NO SE PORQUE PERO SI LO PONGO CRASHEA,PRUEBENLO
     return;
 }
 
@@ -36,4 +36,3 @@ void tick(){
             cdown[i]--;
     }
 }
-

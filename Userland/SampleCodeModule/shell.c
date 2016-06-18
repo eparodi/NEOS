@@ -13,7 +13,7 @@ start_shell(){
     printf("$> ");
     scanf("%s",buffer);
     if(strcmp(buffer,"help")==0){
-      printf(" pedile ayuda a tu mama ");
+      printf(" pedile ayuda a tu mama\n");
     }else if(strcmp(buffer,"exit")==0){
       exit = 1;
     }else if(strncmp(buffer,"echo ",5)==0){
@@ -24,7 +24,9 @@ start_shell(){
       printf("%s\n", get_hour());
     }else if(strcmp(buffer,"date")==0){
       printf("%s\n", get_date());
-    } 
+    }else if(strcmp(buffer,"fractal")==0){
+      draw_fractal(2,2,768);
+    }
  }  while(exit == -1);
   printf(" nos fuimos ");
 }

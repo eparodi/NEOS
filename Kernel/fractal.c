@@ -24,7 +24,7 @@ void drawr(int x, int y,int siz,int state){
     drawr(x+t+t,y+t+t,t,state-1);
 }
 
-void drawFractal(int x, int y,int siz){
+void drawFractal(int x, int y,unsigned int siz){
     int xi,yi,t;
     int pasos=5;
     int i,j,p;
@@ -38,7 +38,9 @@ void drawFractal(int x, int y,int siz){
                 drawr(x + t * i, x + t * j, t, p);
             }
         }
+        
         sleep(10);
+
     }
 
 

@@ -110,7 +110,7 @@ void add_to_buffer(){
 		}
 	}
 	if ( write_index == BUFFER_SIZE ){
-		write_index = 0;
+	//	write_index = 0;
 	}
 }
 
@@ -130,7 +130,7 @@ int read_from_buffer(int numOfChars,char * str){
 		numOfChars--;
 	}
 	if ( read_index == BUFFER_SIZE ){
-		read_index = 0;
+		//read_index = 0;
 	}
 	return j;
 

@@ -94,7 +94,7 @@ int main()
 	setTick();
 	set_idt();
 	start_video_mode();
-	drawFractal(2,2,768);
+	//drawFractal(2,2,768);
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");
