@@ -6,6 +6,7 @@
 #include "include/vsa_driver.h"
 #include "include/rtc.h"
 #include "include/fractal.h"
+#include "include/timerTick.h"
 
 /* The amount of system call in Linux API. */
 #define SYS_CALL_SIZE 190
@@ -69,8 +70,10 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
  int
  time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
-void
-fractal_sc(qword _rbx,qword _rcx, qword _rdx,qword _rdi, qword _rsi);
+//TODO: DOCUMENTATION
+void fractal_sc(qword,qword,unsigned int);
+
+void sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 void
 start_system_call(){
@@ -83,6 +86,7 @@ start_system_call(){
 	syscall_vector[13] = &time_sc;
   	syscall_vector[2] = &fractal_sc;/** random number ,may change**/
   	syscall_vector[14] = &clear_screen;
+	syscall_vector[100] = &sleep_sc;
   	//TODO: add system calls to the vector.
 }
 
@@ -96,8 +100,7 @@ null_function(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi){
 	return 0;
 }
 
-void
-fractal_sc(qword _rbx,qword _rcx, qword _rdx,qword _rdi, qword _rsi){
+void fractal_sc(qword _rbx,qword _rcx,unsigned int _rdx){
   drawFractal(_rbx,_rcx,_rdx);
   return;
 }
@@ -129,3 +132,8 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
  time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
  	return get_time_data(_rbx);
  }
+
+void
+sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
+	sleep(_rbx);
+}

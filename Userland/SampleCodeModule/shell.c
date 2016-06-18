@@ -8,7 +8,7 @@ start_shell(){
   char * buffer = malloc(1000);
   buffer[0] = 0;
   int exit = -1;
-  int i = 0;
+  int i = 6;
 	do{
     printf("$> ");
     scanf("%s",buffer);
@@ -26,6 +26,9 @@ start_shell(){
       draw_fractal(2,2,768);
     }else if(strcmp(buffer,"clear")==0){
       cls();
+    }else if(strcmp(buffer,"sleep")==0){
+      sleep(10000);
+      printf("Dormi 10 segundos.\n");
     }
  }  while(exit == -1);
   printf(" nos fuimos ");

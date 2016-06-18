@@ -38,7 +38,7 @@ void drawFractal(int x, int y,unsigned int siz){
                 drawr(x + t * i, x + t * j, t, p);
             }
         }
-        sleep(100);
+        sleep(1000);
     }
 
 }

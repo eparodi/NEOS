@@ -4,39 +4,68 @@
 
 #include "include/strings.h"
 
-static unsigned int cdown[MAXCOUNTERS];
+typedef void (*timerEventT)() ;
 
-int addTimer(int r){
-    int i;
-    for(i=0;i<MAXCOUNTERS;i++) {
-        if (cdown[i] == 0) {
-            cdown[i]=r;
-            return i;
-        }
+unsigned int cdown[MAXCOUNTERS]={0};
+
+static timerEventT timerEvents[MAXCOUNTERS];
+static int alarmEvents[MAXCOUNTERS];
+static int* sleepCounter;
+static qword counter = 0;
+static int timerListeners =0;
+
+
+void tick(){
+    counter++;
+    for (int j = 0; j < timerListeners; j++) {
+        if(counter % alarmEvents[j]==0) timerEvents[j]();
     }
-    return NOT;
 }
 
-int getTimer(int inx){
-    return cdown[inx];
+
+
+
+void timerSleep(){
+    (*sleepCounter) += 16;	// 1s/60fps = 16ms per frame
 }
 
 void sleep(int time){
-    int x=addTimer(time);
-    char buf[10];
-    if(x==NOT) return;
-    while(getTimer(x)!=0){
-        intToString(buf, getTimer(x));
-        print_string(buf,0xffffff);
-    }
-        //_hlt(); NO SE PORQUE PERO SI LO PONGO CRASHEA,PRUEBENLO
+
+    *sleepCounter=0;
+
+    _cli();
+    addTimerListener(&timerSleep,1);
+    _sti();
+
+    while(*sleepCounter<time);
+
+
+    _cli();
+    deleteTimerListener(&timerSleep);
+    _sti();
+
     return;
 }
 
-void tick(){
-    int i;
-    for(i=0;i<MAXCOUNTERS;i++) {
-        if (cdown[i] > 0)
-            cdown[i]--;
+
+void addTimerListener(timerEventT event, int interval){
+    if(timerListeners >= MAXCOUNTERS) return;
+    else{
+        alarmEvents[timerListeners] = interval;
+        timerEvents[timerListeners] = event;
+        timerListeners++;
+    }
+}
+
+void deleteTimerListener(timerEventT event){
+    for (int j = 0; j < timerListeners; j++) {
+        if(timerEvents[j]==event){
+            timerListeners--;
+            for(int k=0;k<timerListeners;k++){
+                timerEvents[k]=timerEvents[k+1];
+                alarmEvents[k]=alarmEvents[k+1];
+            }
+            break;
+        }
     }
 }
