@@ -92,8 +92,8 @@ int main()
 	ncNewline();
 	ncPrint("Loading Interrupt Descriptor Table: ");
 	setTick();
-	set_idt();
 	start_video_mode();
+	set_idt();
 	//drawFractal(2,2,768);
 	ncPrint("Finished.");
 	ncNewline();

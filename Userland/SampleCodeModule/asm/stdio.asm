@@ -1,5 +1,6 @@
 GLOBAL write
 GLOBAL read
+GLOBAL cls
 
 SECTION .text
 
@@ -40,5 +41,17 @@ read:
 	mov rcx, rsi
 	int 80h
 	mov rsp,rbp
+	pop rbp
+	ret
+
+; -----------------------------------------------------------------------------
+;	Clear Screen System Call.
+; -----------------------------------------------------------------------------
+cls:
+	push rbp
+	mov rbp, rsp
+	mov rax, 14
+	int 80h
+	mov rsp, rbp
 	pop rbp
 	ret

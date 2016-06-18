@@ -130,6 +130,10 @@ print_char(unsigned char c, int color ){
     return;
   }
   draw_char(c, (buffer_position % buffer_max_per_line)*FONT_WIDTH, (buffer_position / buffer_max_per_line)*FONT_HEIGHT , color);
+  if ( buffer_position / buffer_max_per_line == (buffer_max_per_column) ){
+    move_screen();
+    buffer_position -= buffer_max_per_line;
+  }
   buffer_position++;
 }
 

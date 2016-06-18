@@ -31,7 +31,7 @@ irq_handler(int irq_number){
     case 0x00:
       // Set Timer Tick Interrupt.
       tick();
-          break;
+      break;
     case 0x01:
       add_to_buffer();
       //update_screen();

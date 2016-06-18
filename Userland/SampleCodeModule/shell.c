@@ -18,23 +18,15 @@ start_shell(){
       exit = 1;
     }else if(strncmp(buffer,"echo ",5)==0){
       printf("%s\n",buffer+5);
-    }else if(strcmp(buffer,"clear")==0){
-      clearScreen();
     }else if(strcmp(buffer,"hour")==0){
       printf("%s\n", get_hour());
     }else if(strcmp(buffer,"date")==0){
       printf("%s\n", get_date());
     }else if(strcmp(buffer,"fractal")==0){
       draw_fractal(2,2,768);
+    }else if(strcmp(buffer,"clear")==0){
+      cls();
     }
  }  while(exit == -1);
   printf(" nos fuimos ");
-}
-
-void clearScreen() {
-  int i = 0;
-  while(i<48){
-    printf("\n");
-    i++;
-  }
 }
