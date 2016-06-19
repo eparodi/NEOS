@@ -4,6 +4,10 @@
 #include "include/time.h"
 
 void
+draw_fractal(int,int,int,int);
+
+
+void
 start_shell(){
 //  char * buffer = malloc(1000);
 char buffer[1000]={0};
@@ -26,7 +30,7 @@ char buffer[1000]={0};
       printf("%s\n", get_date());
     }else if(strcmp(buffer,"fractal")==0){
       cls();
-      draw_fractal(1,1,768);
+      draw_fractal(1,1,768,0xFF0000);
 //      printf("Ingrese quit y presione enter para volver a la consola\n");
 //      do{
 //        scanf("%s",buffer);

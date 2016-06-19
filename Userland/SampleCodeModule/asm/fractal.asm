@@ -9,9 +9,11 @@ draw_fractal:
   push rbx
   push rcx
   push rdx
-  mov rax, 2
+  mov rax, 101
   mov rbx, rdi
+  mov r9, rcx
   mov rcx, rsi
+  mov rdsi, r9
   int 80h
   pop rdx
   pop rcx
