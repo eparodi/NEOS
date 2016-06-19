@@ -25,24 +25,23 @@ char buffer[1000]={0};
     }else if(strcmp(buffer,"date")==0){
       printf("%s\n", get_date());
     }else if(strcmp(buffer,"fractal")==0){
-      printf("Ingrese la posicion en x:\n");
-      scanf("%d",&x );
-      printf("Ingrese la posicion en y:\n");
-      scanf("%d",&y );
-      printf("Ingrese el tamaño:\n");
-      scanf("%d",&size);
       cls();
-      draw_fractal(x,y,size);
-      printf("Ingrese quit y presione enter para volver a la consola\n");
-      do{
-        scanf("%s",buffer);
-      }while(strcmp("quit",buffer)!= 0);
+      draw_fractal(1,1,768);
+//      printf("Ingrese quit y presione enter para volver a la consola\n");
+//      do{
+//        scanf("%s",buffer);
+//      }while(strcmp("quit",buffer)!= 0);
+      sleep(2000);
       cls();
     }else if(strcmp(buffer,"clear")==0){
       cls();
     }else if(strcmp(buffer,"sleep")==0){
-      sleep(10000);
+      sleep(3000);
       printf("Dormi 10 segundos.\n");
+    }else if(strcmp(buffer,"module")==0){
+      int* a=0x500000;
+      printf("%d",*a);
+      //draw_fractalc(1,1,768,0xFF0000);
     }
  }  while(exit == -1);
   printf(" nos fuimos ");

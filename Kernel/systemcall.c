@@ -72,7 +72,7 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 //TODO: DOCUMENTATION
 void fractal_sc(qword,qword,unsigned int);
-
+void fractalc_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 void sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 void
@@ -85,6 +85,7 @@ start_system_call(){
 	syscall_vector[4] = &write_sc;
 	syscall_vector[13] = &time_sc;
   	syscall_vector[2] = &fractal_sc;/** random number ,may change**/
+	syscall_vector[101]=&fractalc_sc;
   	syscall_vector[14] = &clear_screen;
 	syscall_vector[100] = &sleep_sc;
   	//TODO: add system calls to the vector.
@@ -104,6 +105,7 @@ void fractal_sc(qword _rbx,qword _rcx,unsigned int _rdx){
   drawFractal(_rbx,_rcx,_rdx);
   return;
 }
+
 int
 read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 
@@ -128,12 +130,17 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	return -1 ;
 }
 
- int
- time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
- 	return get_time_data(_rbx);
- }
+int
+time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
+	return get_time_data(_rbx);
+}
 
 void
 sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	sleep(_rbx);
+}
+
+
+void fractalc_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
+	drawFractalc(_rbx,_rcx,_rdx,_rdi);
 }
