@@ -13,7 +13,7 @@ draw_fractal:
   mov rbx, rdi
   mov r9, rcx
   mov rcx, rsi
-  mov rdsi, r9
+  mov rdi, r9
   int 80h
   pop rdx
   pop rcx

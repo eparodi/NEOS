@@ -35,7 +35,7 @@ char buffer[1000]={0};
 //      do{
 //        scanf("%s",buffer);
 //      }while(strcmp("quit",buffer)!= 0);
-      sleep(2000);
+      sleep(300);
       cls();
     }else if(strcmp(buffer,"clear")==0){
       cls();
@@ -44,8 +44,10 @@ char buffer[1000]={0};
       printf("Dormi 10 segundos.\n");
     }else if(strcmp(buffer,"module")==0){
       int* a=0x500000;
-      printf("%d",*a);
-      //draw_fractalc(1,1,768,0xFF0000);
+      cls();
+      draw_fractal(1,1,768,*a);
+      sleep(300);
+      cls();
     }
  }  while(exit == -1);
   printf(" nos fuimos ");
