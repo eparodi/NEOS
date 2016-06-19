@@ -1,5 +1,5 @@
 #!/bin/bash
-#make clean
+make clean
 make all
 if [ $? = 0 ];
 then

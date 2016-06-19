@@ -41,7 +41,6 @@ char buffer[1000]={0};
       cls();
     }else if(strcmp(buffer,"sleep")==0){
       sleep(3000);
-      printf("Dormi 10 segundos.\n");
     }else if(strcmp(buffer,"module")==0){
       int* a=0x500000;
       cls();
