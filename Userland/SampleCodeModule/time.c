@@ -25,7 +25,7 @@ get_hour(){
 	buff[2]=':';
 	buff[5]=':';
 	buff[8]='\0';
-	
+
 	if ( hours < 10 ){
 		i_to_s(&buff[1], hours, 10);
 	}else{
