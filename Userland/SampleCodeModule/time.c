@@ -12,11 +12,14 @@ typedef unsigned char ntime;
 int
 time(int option);
 
+/* Current time zone */
+static int gmt = -3;
+
 char *
 get_hour(){
 	ntime seconds = time(0);
 	ntime minutes = time(2);
-	ntime hours = time(4);
+	ntime hours = time(4) + gmt;
 	char * buff = malloc(9*sizeof(char));
 	for ( int i = 0; i < 8; i++ ){
 		buff[i] = '0';
