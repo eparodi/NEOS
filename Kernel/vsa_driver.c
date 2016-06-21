@@ -113,8 +113,8 @@ clear_screen(){
   int i, j;
   byte * draw = screen;
   buffer_position = 0;
-  for ( i = 0 ; i <= xres; i++ ){
-    for( j = 0 ; j <= yres; j++ ){
+  for ( i = 0 ; i <= yres; i++ ){
+    for( j = 0 ; j <= xres; j++ ){
       draw[pixel_width * j] = 0;
       draw[pixel_width * j + 1 ] = 0;
       draw[pixel_width * j + 2 ] = 0;
