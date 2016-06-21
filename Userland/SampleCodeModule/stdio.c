@@ -48,11 +48,9 @@ int
 getc(){
 	char ans;
 	unsigned int c =0;
-	//printf("entro" );
 	do{
 		c = read(0, &ans, 1);
 	}while(c == 0);
-	//printf("salgo" );
 	return ans;
 }
 
@@ -103,7 +101,6 @@ printf( const char * str, ...){
 	return ans;
 }
 
-/* %c y %d no andan scan*/
 int
 scanf( const char * str, ...){
 	va_list args;
@@ -137,7 +134,6 @@ scanf( const char * str, ...){
 						}else{
 							v[i++]=0;
 						}
-					//	printf("paso" );
 				}while(k!= '\n');
 					break;
 				case 'd':
@@ -149,7 +145,6 @@ scanf( const char * str, ...){
 					}else{
 						num[i++]=0;
 					}
-				//	printf("paso" );
 			}while(k!= '\n');
 			int * numb =va_arg(args,int*);
 

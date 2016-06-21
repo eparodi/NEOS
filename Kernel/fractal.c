@@ -1,6 +1,4 @@
-//
-// Created by mota on 17/06/16.
-//
+
 #include "include/timerTick.h"
 #include "include/vsa_driver.h"
 

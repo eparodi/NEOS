@@ -9,7 +9,6 @@ draw_fractal(int,int,int,int);
 
 void
 start_shell(){
-//  char * buffer = malloc(1000);
 char buffer[1000]={0};
   buffer[0] = 0;
   int exit = -1;
