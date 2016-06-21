@@ -74,12 +74,12 @@ update_screen(unsigned char keyCode){
 			addBuff = 1;
 		//		print_char(keyCode);
 		if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
-			if(bloqMayusPressed == -1){
+			if(bloqMayusPressed == -1  ||  numberBoard(keyCode)){
 				print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
 			}else{
 					print_char(KEYS_VALUES[keyCode][0],0xffffff);
 			}
-		}else if(bloqMayusPressed == 1){
+		}else if(bloqMayusPressed == 1 && !numberBoard(keyCode)){
 				print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
 		}else{
 			print_char(KEYS_VALUES[keyCode][0],0xffffff);
@@ -108,12 +108,12 @@ void add_to_buffer(){
 		counter++;
 	}
 		if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
-			if(bloqMayusPressed == -1){
+			if(bloqMayusPressed == -1  ||  numberBoard(key_code)){
 				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
 			}else{
 				buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
 			}
-		}else if(bloqMayusPressed == 1){
+		}else if(bloqMayusPressed == 1 && !numberBoard(key_code)){
 				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
 		}else{
 			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
@@ -122,6 +122,14 @@ void add_to_buffer(){
 	if ( write_index == BUFFER_SIZE ){
 	//	write_index = 0;
 	}
+}
+
+int numberBoard(unsigned char keyCode){
+
+	if(keyCode >= 2 && keyCode<=13){
+		return 1;
+	}
+	return 0;
 }
 
 int read_from_buffer(int numOfChars,char * str){
