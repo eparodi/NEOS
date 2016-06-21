@@ -9,4 +9,8 @@
 char *
 get_hour();
 
+
+char *
+get_day();
+
 #endif

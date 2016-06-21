@@ -1,5 +1,7 @@
 #include "include/stdlib.h"
 
+
+
 long
 pow(long base, long exponent){
 	long ans = 1;
@@ -10,6 +12,7 @@ pow(long base, long exponent){
 
 	return ans;
 }
+
 
 int
 digits(long number, int radix){
@@ -32,8 +35,7 @@ digits(long number, int radix){
 int
 i_to_s(char * buffer, long number, int radix){
 	int size, i, aux, aux_size;
-	char letters[27] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N',
-						'O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
 
 	size = digits(number, radix);
 	aux_size = size;
@@ -48,7 +50,7 @@ i_to_s(char * buffer, long number, int radix){
 	for(i = aux_size - 1; i >= 0 ; i-- ){
 		aux = number % radix;
 		if ( aux >= 10 && aux <= 37){
-			buffer[i] = letters[aux - 10];
+			buffer[i] = 'A'+(aux - 10);
 		}else{
 			buffer[i] = number % radix + '0';
 		}

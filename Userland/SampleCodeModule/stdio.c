@@ -6,7 +6,7 @@
 #define STD_OUT		1
 #define STD_ERR 	2
 
-// TODO: change to string library.
+
 int
 strlen( const char * str );
 
@@ -144,7 +144,6 @@ scanf( const char * str, ...){
 				}while(k!= '\n');
 					break;
 				case 'd':
-				//toDO s_to_i	aux = i_to_s(buf, va_arg(args, int), 10);
 				i=0;
 				do{
 					k=getc();
