@@ -24,7 +24,7 @@ char buffer[1000]={0};
       printf("date           : Muestra la fecha actual.\n");
       printf("echo [message] : Muestra una linea de texto [message].\n");
       printf("exit           : Cierra la consola.\n");
-      printf("fractal        : Muestra un fractal en la pantalla.\n");
+      printf("fractal        : Muestra un fractal en xla pantalla.\n");
       printf("help           : Muestra el manual de ayuda.\n");
       printf("hour           : Muestra la hora actual.\n");
       printf("sleep          : La consola espera durante un tiempo.\n");

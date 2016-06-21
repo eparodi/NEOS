@@ -37,7 +37,7 @@ void drawFractalc(int x, int y,unsigned int siz,unsigned int color){
                 drawr(x + t * i, x + t * j, t, p,color);
             }
         }
-        sleep(1000);
+        sleep(152);
     }
 
 }
