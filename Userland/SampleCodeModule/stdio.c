@@ -89,9 +89,6 @@ printf( const char * str, ...){
 				case 's':
 					puts(va_arg(args, char * ));
 					break;
-				case 'c':
-					putchar(va_arg(args,char));
-					break;
 				case 'd':
 					aux = i_to_s(buf, va_arg(args, int), 10);
 					buf[aux] = 0;
