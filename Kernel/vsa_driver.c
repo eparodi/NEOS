@@ -1,6 +1,6 @@
 #include "include/types.h"
 #include "include/font.h"
-
+#include "include/vsa_driver.h"
 #define FONT_WIDTH     10
 #define FONT_HEIGHT    16
 //http://wiki.osdev.org/VESA_Video_Modes
@@ -35,7 +35,6 @@ typedef struct{
 #pragma pack(pop)
 
 //http://wiki.osdev.org/Drawing_In_Protected_Mode
-
 /* The beginning of the table */
 static ModeInfoBlock * screen_info =  (ModeInfoBlock *) 0x5C00;
 static byte * screen;
@@ -45,6 +44,8 @@ static int xres, yres;
 static int buffer_position = 0;
 static int buffer_max_per_line;
 static int buffer_max_per_column;
+
+
 
 void
 start_video_mode(){
@@ -242,3 +243,17 @@ draw_circle( int x0, int y0, int radius, int color){
             draw_pixel(x0+x, y0+y, color);
 }
 
+int
+get_buffer_position(){
+  return buffer_position;
+}
+
+int
+get_buffer_max_per_line(){
+  return buffer_max_per_line;
+}
+
+int
+update_buffer_position(){
+  buffer_position++;
+}

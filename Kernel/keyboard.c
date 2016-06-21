@@ -1,5 +1,4 @@
 #include "include/keyboard.h"
-#include "include/videoDriver.h"
 #include "include/naiveConsole.h"
 #include "include/vsa_driver.h"
 
@@ -9,88 +8,77 @@ static char* KEYS_VALUES[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8",
 								  	"y", "u", "i", "o", "p", "´", "+", "\n", "", "a",				// 21 - 30
 									"s", "d", "f", "g", "h", "j", "k", "l", "", "{", 			// 31 - 40
 								  	"|", "LSHIFT", "}", "z", "x", "c", "v", "b", "n", "m",  	// 41 - 50
-								  	",", ".", "-", "", "*", "ALT", " ", "", "", "",				// 51 - 60
-								  	"", "", "", "", "", "", "", "", "", "", 					// 61 - 70
-								  	"7", "UARR", "9", "-", "LARR", "5", "RARR", "+", "1", "2",  // 71 - 80
-								  	"3", "0", ".", "", "", "", "", "", "", ""}; 				// 81 - 90
+								  	",", ".", "-", "", "*", "ALT", " ", "", "", ""		}	;	// 51 - 60
+
 
 static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/", "(", ")", 	// 0 - 10
 									"=", "?", "¡", "BACKSPACE", "    ", "Q", "W", "E", "R", "T",// 11 - 20
 								  	"Y", "U", "I", "O", "P", "¨", "*", "\n", "", "A",				// 21 - 30
 									"S", "D", "F", "G", "H", "J", "K", "L", "", "[", 			// 31 - 40
 								  	"°", "LSHIFT", "]", "Z", "X", "C", "V", "B", "N", "M",  		// 41 - 50
-								  	";", ":", "_", "", "*", "ALT", " ", "", "", "",				// 51 - 60
-								  	"", "", "", "", "", "", "", "", "", "", 					// 61 - 70
-								  	"7", "8", "9", "-", "4", "5", "6", "+", "1", "2", 			// 71 - 80
-								  	"3", "0", ".", "", "", "", "", "", "", ""}; 				// 81 - 90
+								  	";", ":", "_", "", "*", "ALT", " ", "", "", ""}	;		// 51 - 60
 
-static int addBuff = -1;
-static int endOfLine = -1;
-static unsigned int counter = 0;
+
+static int addBuff = -1; /** flag that indicates to add or not a key**/
+static int endOfLine = -1;/** flag that indicates if an end of line was found**/
+static unsigned int counter = 0;/** written keys counter.It decrease in deletion**/
 void
 update_screen(unsigned char keyCode){
 	addBuff = -1;
 	// Key Pressed
 	if (keyCode >= 0 && keyCode < mapSize) {
-
 		switch(keyCode){
 			case 28: endOfLine=1;
-									counter = 0;
-                    addBuff=1;
-                    nextLine();
-                    break;
+								counter = 0;
+                  addBuff=1;
+									delete();/** deletes the cursor**/
+                  nextLine();
+                  break;
 			case 14: if(counter > 0){
 									delete();
+									delete();/** deletes the cursor**/
 									counter--;
+									if(counter != 0){
+										update_cursor();
+									}
 									if(write_index != 0){
 										write_index--;
 									}
 								}
-				//backspace();
-				 break;
+				 				break;
 			case 42:
-			shiftLeftPressed*=-1;
-			break;
+						shiftLeftPressed*=-1;
+						break;
 			case 54:
-			shiftRightPressed*=-1;
-			break;
+						shiftRightPressed*=-1;
+						break;
 			case 58:
-					bloqMayusPressed*=-1;
-				 break;
-			case 29:
-				  break;
-			case 72: moveCursorUp();
-				break;
-			case 80: moveCursorDown();
-				break;
-			case 75: moveCursorLeft();
-				break;
-			case 77: moveCursorRight();
-				break;
-			case 83: supr();
-				break;
+						bloqMayusPressed*=-1;
+				 		break;
 			default:
-
-			addBuff = 1;
-		//		print_char(keyCode);
-		if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
-			if(bloqMayusPressed == -1  ||  numberBoard(keyCode)){
-				print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
-			}else{
-					print_char(KEYS_VALUES[keyCode][0],0xffffff);
-			}
-		}else if(bloqMayusPressed == 1 && !numberBoard(keyCode)){
-				print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
-		}else{
-			print_char(KEYS_VALUES[keyCode][0],0xffffff);
-		}
-				break;
+						if(counter!=0){
+							delete();/**deletes current cursor**/
+						}
+						addBuff = 1;
+						if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
+								if(bloqMayusPressed == -1  ||  numberBoard(keyCode)){
+										print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
+								}else{
+										print_char(KEYS_VALUES[keyCode][0],0xffffff);
+								}
+						}else if(bloqMayusPressed == 1 && !numberBoard(keyCode)){
+								print_char(SHIFT_KEYS_VALUES[keyCode][0],0xffffff);
+						}else{
+								print_char(KEYS_VALUES[keyCode][0],0xffffff);
+							}
+							update_cursor();
+							break;
 		}
 	}
 
 	// Key Released
  else {
-		if (keyCode == 170){	// L/R Shift
+		if (keyCode == 170){
 			shiftLeftPressed *= -1;
 		}if(keyCode == 182) {
 			shiftRightPressed *= -1;
@@ -99,7 +87,14 @@ update_screen(unsigned char keyCode){
 	}
 
 }
-
+void update_cursor(){
+	if ( get_buffer_position() > 0){
+		int x = ((get_buffer_position()) % get_buffer_max_per_line()) * 10;
+		int y = ((get_buffer_position()) / get_buffer_max_per_line()) * 16;
+		draw_filled_rectangle(x,y,x+10,y+16,0xffffff);
+		update_buffer_position();
+	}
+}
 void add_to_buffer(){
 	char key_code = _read_keyboard();
 	update_screen(key_code);
@@ -119,9 +114,6 @@ void add_to_buffer(){
 			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
 		}
 	}
-	if ( write_index == BUFFER_SIZE ){
-	//	write_index = 0;
-	}
 }
 
 int numberBoard(unsigned char keyCode){
@@ -133,7 +125,6 @@ int numberBoard(unsigned char keyCode){
 }
 
 int read_from_buffer(int numOfChars,char * str){
-	//TODO: change this to take only one key.
 	if(read_index == write_index || write_index-read_index < numOfChars || endOfLine != 1){
 		return 0;
 	}
@@ -145,9 +136,6 @@ int read_from_buffer(int numOfChars,char * str){
 		}
 		 str[i++] = buffer[(read_index++) %(BUFFER_SIZE-1)];
 		numOfChars--;
-	}
-	if ( read_index == BUFFER_SIZE ){
-		//read_index = 0;
 	}
 	return j;
 

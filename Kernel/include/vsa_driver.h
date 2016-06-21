@@ -88,14 +88,20 @@ print_string(const char * str, int color );
  *		-color: the color in RGB.
  */
 void
-print_string_by_length(char * str, int length , int color);
+print_string_by_length(const char * str, int length , int color);
 
 /*
  * Deletes the character in the previous writing position.
  */
 void
 delete();
+int
+update_buffer_position();
+int
+get_buffer_position();
 
+int
+get_buffer_max_per_line();
 /*
  * Draws a rectangle
  */
