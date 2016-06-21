@@ -20,7 +20,8 @@ void
 add_to_buffer();
 int
 read_from_buffer(int,char *);
-
+int
+numberBoard(unsigned char);
 
 
 static int shiftRightPressed = -1;
