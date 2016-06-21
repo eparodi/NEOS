@@ -19,7 +19,14 @@ char buffer[1000]={0};
     printf("$> ");
     scanf("%s",buffer);
     if(strcmp(buffer,"help")==0){
-      printf(" pedile ayuda a tu mama\n");
+      printf("Comandos de NEOShell:\n");
+      printf("clear          : Borra la pantalla.\n");
+      printf("date           : Muestra la fecha actual.\n");
+      printf("echo [message] : Muestra una linea de texto [message].\n");
+      printf("exit           : Cierra la consola.\n");
+      printf("fractal        : Muestra un fractal en la pantalla.\n");
+      printf("hour           : Muestra la hora actual.\n");
+      printf("sleep [time]   : La consola espera durante un tiempo [time].\n");
     }else if(strcmp(buffer,"exit")==0){
       exit = 1;
     }else if(strncmp(buffer,"echo ",5)==0){
@@ -29,12 +36,9 @@ char buffer[1000]={0};
     }else if(strcmp(buffer,"date")==0){
       printf("%s\n", get_date());
     }else if(strcmp(buffer,"fractal")==0){
+      int* a=0x500000;
       cls();
-      draw_fractal(1,1,768,0xFF0000);
-//      printf("Ingrese quit y presione enter para volver a la consola\n");
-//      do{
-//        scanf("%s",buffer);
-//      }while(strcmp("quit",buffer)!= 0);
+      draw_fractal(1,1,768,*a);
       sleep(300);
       cls();
     }else if(strcmp(buffer,"clear")==0){
@@ -42,13 +46,9 @@ char buffer[1000]={0};
     }else if(strcmp(buffer,"sleep")==0){
       sleep(3000);
       printf("Dormi 10 segundos.\n");
-    }else if(strcmp(buffer,"module")==0){
-      int* a=0x500000;
-      cls();
-      draw_fractal(1,1,768,*a);
-      sleep(300);
-      cls();
+    }else{
+      printf("No existe ese comando, use help para aclarar sus dudas.\n");
     }
  }  while(exit == -1);
-  printf(" nos fuimos ");
+  printf(" Ahora puede apagar el equipo.");
 }

@@ -8,7 +8,7 @@ sampleCodeModule:
 	cd SampleCodeModule; make
 
 sampleDataModule:
-	printf "16711935" >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
+	./file.sh
 
 clean:
 	cd SampleCodeModule; make clean
