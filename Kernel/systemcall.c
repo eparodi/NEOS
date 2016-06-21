@@ -70,9 +70,28 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
  int
  time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
-//TODO: DOCUMENTATION
+/*
+ * The fractal system call. Draws a red fractal.
+ *	Parameters:
+ *		-_rbx: x.
+ *		-_rcx: y.
+ *		-_rdx: size.
+ */
 void fractal_sc(qword,qword,unsigned int);
+/*
+ * The fractal system call. Draws a defined color fractal.
+ *	Parameters:
+ *		-_rbx: x.
+ *		-_rcx: y.
+ *		-_rdx: size.
+ *		-_rdi: color.
+ */
 void fractalc_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
+/*
+ * The sleep system call.
+  *	Parameters:
+ *		-_rbx: ms.
+ */
 void sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 void
@@ -84,11 +103,11 @@ start_system_call(){
 	syscall_vector[3] = &read_sc;
 	syscall_vector[4] = &write_sc;
 	syscall_vector[13] = &time_sc;
-  	syscall_vector[2] = &fractal_sc;/** random number ,may change**/
+
+	syscall_vector[2] = &fractal_sc;
 	syscall_vector[101]=&fractalc_sc;
   	syscall_vector[14] = &clear_screen;
 	syscall_vector[100] = &sleep_sc;
-  	//TODO: add system calls to the vector.
 }
 
 qword

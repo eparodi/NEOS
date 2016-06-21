@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-//TODO: add comments.
-
 void ncPrint(const char * string);
 void ncPrintChar(char character);
 void ncNewline();

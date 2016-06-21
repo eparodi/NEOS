@@ -26,7 +26,7 @@ char buffer[1000]={0};
       printf("exit           : Cierra la consola.\n");
       printf("fractal        : Muestra un fractal en la pantalla.\n");
       printf("hour           : Muestra la hora actual.\n");
-      printf("sleep [time]   : La consola espera durante un tiempo [time].\n");
+      printf("sleep          : La consola espera durante un tiempo.\n");
     }else if(strcmp(buffer,"exit")==0){
       exit = 1;
     }else if(strncmp(buffer,"echo ",5)==0){
