@@ -45,7 +45,7 @@ char buffer[1000]={0};
     }else if(strcmp(buffer,"clear")==0){
       cls();
     }else if(strcmp(buffer,"sleep")==0){
-      sleep(3000);
+      sleep(2400);
       printf("Dormi 10 segundos.\n");
     }else{
       printf("No existe ese comando, use help para aclarar sus dudas.\n");
