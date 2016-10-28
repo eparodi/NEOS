@@ -8,7 +8,7 @@
 #include <idt.h>
 #include <rtc.h>
 #include  "include/timerTick.h"
-#include "include/fractal.h"
+#include <pci.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -94,7 +94,7 @@ int main()
 	setTick();
 	start_video_mode();
 	set_idt();
-	//drawFractal(2,2,768);
+	print_all_devices();
 	ncPrint("Finished.");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");
