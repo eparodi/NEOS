@@ -31,10 +31,10 @@ print_all_devices(){
         aux[size] = 0;
         print_string("Device:",0xffffff);
         print_string(aux,0xffffff);
-        print_string(": 0x",0xffffff);
+        print_string(":",0xffffff);
         size = parse_int(aux,vendorID,16);
         aux[size] = 0;
-        print_string(" VendorID:",0xffffff);
+        print_string(" VendorID: 0x",0xffffff);
         print_string(aux,0xffffff);
         deviceID = get_devide_id(i, j);
         size = parse_int(aux,deviceID,16);
