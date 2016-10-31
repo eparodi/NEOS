@@ -22,6 +22,15 @@ static char* SHIFT_KEYS_VALUES[] = {"", "ESC", "!", "\"", "#", "$", "%", "&", "/
 static int addBuff = -1; /** flag that indicates to add or not a key**/
 static int endOfLine = -1;/** flag that indicates if an end of line was found**/
 static unsigned int counter = 0;/** written keys counter.It decrease in deletion**/
+static int shiftRightPressed = -1;
+static int shiftLeftPressed = -1;
+static int bloqMayusPressed = -1;
+static int altPressed = -1;
+static int mapSize = 60;
+static char buffer[BUFFER_SIZE]={0};
+static unsigned int read_index = 0;
+static unsigned int write_index = 0;
+
 void
 update_screen(unsigned char keyCode){
 	addBuff = -1;
@@ -51,6 +60,9 @@ update_screen(unsigned char keyCode){
 						break;
 			case 54:
 						shiftRightPressed*=-1;
+						break;
+			case 56:
+						altPressed *= -1;
 						break;
 			case 58:
 						bloqMayusPressed*=-1;
@@ -87,6 +99,7 @@ update_screen(unsigned char keyCode){
 	}
 
 }
+
 void update_cursor(){
 	if ( get_buffer_position() > 0){
 		int x = ((get_buffer_position()) % get_buffer_max_per_line()) * 10;
@@ -95,6 +108,7 @@ void update_cursor(){
 		update_buffer_position();
 	}
 }
+
 void add_to_buffer(){
 	char key_code = _read_keyboard();
 	update_screen(key_code);
@@ -104,14 +118,14 @@ void add_to_buffer(){
 	}
 		if(shiftRightPressed == 1 || shiftLeftPressed == 1 ){
 			if(bloqMayusPressed == -1  ||  numberBoard(key_code)){
-				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
+				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[(int)key_code][0];
 			}else{
-				buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
+				buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[(int)key_code][0];
 			}
 		}else if(bloqMayusPressed == 1 && !numberBoard(key_code)){
-				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[key_code][0];
+				buffer[(write_index++) % (BUFFER_SIZE-1)]= SHIFT_KEYS_VALUES[(int)key_code][0];
 		}else{
-			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[key_code][0];
+			buffer[(write_index++) % (BUFFER_SIZE-1)]= KEYS_VALUES[(int)key_code][0];
 		}
 	}
 }

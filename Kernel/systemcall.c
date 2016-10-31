@@ -4,7 +4,6 @@
 #include "include/naiveConsole.h"
 #include "include/vsa_driver.h"
 #include "include/rtc.h"
-#include "include/fractal.h"
 #include "include/timerTick.h"
 
 /* The amount of system call in Linux API. */
@@ -17,6 +16,9 @@
 
 /* The vector of pointers to system call functions. RAX register holds the index of the function. */
 static qword (* syscall_vector[SYS_CALL_SIZE])(qword,qword,qword,qword,qword) ;
+
+/* Typedef function systemcall */
+typedef qword (*systemcall)(qword,qword,qword,qword,qword);
 
 /*
  *	This function replaces not yet implemented System Calls.
@@ -70,23 +72,6 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
  time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
 /*
- * The fractal system call. Draws a red fractal.
- *	Parameters:
- *		-_rbx: x.
- *		-_rcx: y.
- *		-_rdx: size.
- */
-void fractal_sc(qword,qword,unsigned int);
-/*
- * The fractal system call. Draws a defined color fractal.
- *	Parameters:
- *		-_rbx: x.
- *		-_rcx: y.
- *		-_rdx: size.
- *		-_rdi: color.
- */
-void fractalc_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
-/*
  * The sleep system call.
   *	Parameters:
  *		-_rbx: ms.
@@ -99,14 +84,11 @@ start_system_call(){
 	for (; i < SYS_CALL_SIZE ; i++){
 		syscall_vector[i] = &null_function;
 	}
-	syscall_vector[3] = &read_sc;
-	syscall_vector[4] = &write_sc;
-	syscall_vector[13] = &time_sc;
-
-	syscall_vector[2] = &fractal_sc;
-	syscall_vector[101]=&fractalc_sc;
-  	syscall_vector[14] = &clear_screen;
-	syscall_vector[100] = &sleep_sc;
+	syscall_vector[3] = (systemcall)&read_sc;
+	syscall_vector[4] = (systemcall)&write_sc;
+	syscall_vector[13] = (systemcall)&time_sc;
+	syscall_vector[14] = (systemcall)&clear_screen;
+	syscall_vector[100] = (systemcall)&sleep_sc;
 }
 
 qword
@@ -117,11 +99,6 @@ system_call_interrupt(qword _rdi, qword _rsi, qword _rdx, qword _rcx, qword _rax
 qword
 null_function(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi){
 	return 0;
-}
-
-void fractal_sc(qword _rbx,qword _rcx,unsigned int _rdx){
-  drawFractal(_rbx,_rcx,_rdx);
-  return;
 }
 
 int
@@ -139,10 +116,10 @@ read_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 qword
 write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	if ( _rbx == STD_OUT ){
-		print_string_by_length( _rcx, _rdx ,0xffffff);
+		print_string_by_length( (char *)_rcx, _rdx ,0xffffff);
 		return _rdx;
 	}else if ( _rbx == STD_ERR ) {
-		print_string_by_length( _rcx, _rdx ,0xffffff);
+		print_string_by_length( (char *)_rcx, _rdx ,0xffffff);
 		return _rdx;
 	}
 	return -1 ;
@@ -156,9 +133,4 @@ time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 void
 sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	sleep(_rbx);
-}
-
-
-void fractalc_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
-	drawFractalc(_rbx,_rcx,_rdx,_rdi);
 }

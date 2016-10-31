@@ -1,4 +1,6 @@
 #include "include/stdlib.h"
+#include "include/math.h"
+#include "include/time.h"
 
 typedef unsigned char ntime;
 

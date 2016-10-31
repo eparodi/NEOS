@@ -11,6 +11,6 @@ get_hour();
 
 
 char *
-get_day();
+get_date();
 
 #endif

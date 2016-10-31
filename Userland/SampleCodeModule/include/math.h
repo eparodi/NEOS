@@ -20,9 +20,9 @@ int
 digits(long number, int radix);
 
 /*
- * Writes in the conventional writing human symbols system, a number in the buffer 
+ * Writes in the conventional writing human symbols system, a number in the buffer
  * given with the specified radix.
- * NOTE: It only works if the human interpretable list of symbols implemented in 
+ * NOTE: It only works if the human interpretable list of symbols implemented in
  * my system supports the conventional number symbols!
  * -Parameters:
  *		-buffer: the buffer where to write.
@@ -31,5 +31,8 @@ digits(long number, int radix);
  */
 int
 i_to_s(char * buffer, long number, int radix);
+
+int
+s_to_i(char* buffer);
 
 #endif

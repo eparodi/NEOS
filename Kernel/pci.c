@@ -18,8 +18,8 @@ print_all_devices(){
   uint16_t vendorID;
   uint16_t deviceID;
   char aux[30];
-  for ( int i = 0 ; i <= 0xFF ; i++ ){
-    for ( int j = 0 ; j <= 0xFF ; j+= 0x08 ){
+  for ( i = 0 ; i <= 0xFF ; i++ ){
+    for ( j = 0 ; j <= 0xFF ; j+= 0x08 ){
       vendorID = get_vendor_id(i, j);
       if (vendorID != 0xFFFF){
         size = parse_int(aux,i,10);

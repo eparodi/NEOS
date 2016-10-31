@@ -5,6 +5,13 @@
 #define FONT_HEIGHT    16
 //http://wiki.osdev.org/VESA_Video_Modes
 
+
+/*
+ *  When the text reaches the bottom, it moves all the characters one line up.
+ */
+void
+move_screen();
+
 #pragma pack(push)
 #pragma pack(1)
 typedef struct{
@@ -49,7 +56,7 @@ static int buffer_max_per_column;
 
 void
 start_video_mode(){
-	screen = (byte *) screen_info->physbase;
+	screen = (byte *) (uint64_t) screen_info->physbase;
 	pitch = screen_info->pitch;
 	pixel_width = screen_info->bpp / 8;
 	xres = screen_info->Xres;
@@ -87,7 +94,8 @@ void
 draw_string( char * str , int x , int y , int color){
 	int i = 0;
 	while(str[i] != '\0'){
-		draw_char(str[i++],x+(10*i),y,color);
+		draw_char(str[i],x+(10*i),y,color);
+    i++;
 	}
 }
 
@@ -183,10 +191,10 @@ nextLine(){
 
 void
 move_screen(){
-  int i = 0;
+  int i;
   int pos1 = 0;
   int pos2 = FONT_HEIGHT * pitch;
-  for ( i; i < xres * yres - buffer_max_per_line ; i++ ){
+  for ( i = 0; i < xres * yres - buffer_max_per_line ; i++ ){
       screen[pos1] = screen[pos2];
       screen[pos1+1] = screen[pos2+1];
       screen[pos1+2] = screen[pos2+2];
@@ -253,7 +261,7 @@ get_buffer_max_per_line(){
   return buffer_max_per_line;
 }
 
-int
+void
 update_buffer_position(){
   buffer_position++;
 }

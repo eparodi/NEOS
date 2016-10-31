@@ -1,16 +1,16 @@
-//#include "stdlib.h"
+#include "stdlib.h"
 
 #define MEM_START 0x10000000
 
 typedef unsigned char byte;
 
-static byte * mem= MEM_START;
+static byte * mem= (byte *)MEM_START;
 
 
 void* malloc(int s){
-	int tor=mem;
+	void * tor= mem;
 	mem+=s;
-	return (void*)tor;
+	return tor;
 }
 
 void free(char* addr){

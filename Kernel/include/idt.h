@@ -24,10 +24,6 @@ typedef struct{
 // Stops packing data.
 #pragma pack(pop)
 
-/* Pointer to the beggining of the Interrupt Descriptor Table. */
-static INT_DESCRIPTOR * idt = (INT_DESCRIPTOR *) 0x0;
-/* Pointer to the end of the Interrupt Descriptor Table. */
-static INT_DESCRIPTOR * idt_end = (INT_DESCRIPTOR *) 0xfff;
 /* Interrupt request first index */
 #define IRQ_INDEX 0x20
 /* System Call index */

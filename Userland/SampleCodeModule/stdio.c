@@ -1,17 +1,12 @@
 #include "include/stdio.h"
 #include "include/math.h"
 #include <stdarg.h>
+#include "stdio.h"
 
 #define STD_IN 		0
 #define STD_OUT		1
 #define STD_ERR 	2
 
-
-int
-strlen( const char * str );
-
-int
-strncmp( const char * str1 , const char * str2 , int length );
 
 int
 strncmp( const char * str1 , const char * str2 , int length ){
@@ -43,7 +38,7 @@ putchar( char letter ){
 	write(STD_OUT, &letter,1);
 	return letter;
 }
-static int k = 0;
+
 int
 getc(){
 	char ans;
@@ -71,11 +66,10 @@ printf( const char * str, ...){
 	va_list args;
 	int ans = 0;
 	int index = 0;
-	int arg = 0;
 	int aux = 0;
 	char buf[30];
 	char c;
-	va_start(args, arg);
+	va_start(args, str);
 	while ( str[index] != '\0' ){
 		c = str[index++];
 		if ( c != '%'){
@@ -106,15 +100,11 @@ scanf( const char * str, ...){
 	va_list args;
 	int ans = 0;
 	int index = 0;
-	int arg = 0;
-	int aux = 0;
 	int i ;
 	int k=0;
-	int ax;
-	char buf[30]={0};
-		char num[1000]={0};
+	char num[1000]={0};
 	char c;
-	va_start(args, arg);
+	va_start(args, str);
 	while ( str[index] != 0){
 
 		c = str[index++];

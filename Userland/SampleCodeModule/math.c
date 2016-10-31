@@ -1,6 +1,5 @@
 #include "include/stdlib.h"
-
-
+#include "math.h"
 
 long
 pow(long base, long exponent){

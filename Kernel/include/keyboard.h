@@ -22,17 +22,6 @@ int
 read_from_buffer(int,char *);
 int
 numberBoard(unsigned char);
-
-
-static int shiftRightPressed = -1;
-static int shiftLeftPressed = -1;
-static int bloqMayusPressed = -1;
-static int altPressed = -1;
-static int mapSize = 60;
-static char buffer[BUFFER_SIZE]={0};
-static unsigned int read_index = 0;
-static unsigned int write_index = 0;
-
-
-
+void
+update_cursor();
 #endif

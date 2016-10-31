@@ -18,4 +18,10 @@ _pci_read_reg(uint8_t bus, uint8_t dev_func, uint8_t regist );
 uint16_t
 get_vendor_id(uint8_t bus, uint8_t dev_func);
 
+uint16_t
+get_devide_id(uint8_t bus, uint8_t dev_func);
+
+void
+print_all_devices();
+
 #endif

@@ -7,6 +7,11 @@
 #include "include/keyboard.h"
 #include "include/systemcall.h"
 
+/* Pointer to the beggining of the Interrupt Descriptor Table. */
+static INT_DESCRIPTOR * idt = (INT_DESCRIPTOR *) 0x0;
+/* Pointer to the end of the Interrupt Descriptor Table. */
+static INT_DESCRIPTOR * idt_end = (INT_DESCRIPTOR *) 0xfff;
+
 boolean
 setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
   if ( sizeof(INT_DESCRIPTOR) * index > (qword) idt_end ){
@@ -25,7 +30,6 @@ setup_idt_entry(int index, byte selector, qword offset, byte type_attr){
 
 void
 irq_handler(int irq_number){
-  static char a='0';
   switch( irq_number ){
     case 0x00:
       // Set Timer Tick Interrupt.

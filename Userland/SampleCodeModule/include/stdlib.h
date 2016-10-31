@@ -7,7 +7,7 @@
  * Parameters:
  *  -s: size.
  */
-char* malloc(int s);
+void * malloc(int s);
 /*
  * Liberate memoy
  * Parameters:
@@ -15,4 +15,11 @@ char* malloc(int s);
  */
 void free(char* addr);
 
+/*
+ * Sleeps the pc for a period of time.
+ * Parameters:
+ *  -time: the amount of time to sleep, on ticks.
+ */
+ void
+ sleep(int time);
 #endif

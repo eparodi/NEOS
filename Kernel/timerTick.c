@@ -5,7 +5,7 @@
 
 typedef void (*event)() ;
 
-static unsigned int* cdown[MAXCOUNTERS];
+static unsigned int cdown[MAXCOUNTERS];
 
 
 
@@ -15,7 +15,6 @@ void rem(int i){
 
 
 void tick(){
-    int flag=0;
     for(int i=0;i<MAXCOUNTERS;i++){
         if(cdown[i]>0){
             rem(i);

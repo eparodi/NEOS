@@ -95,14 +95,20 @@ print_string_by_length(const char * str, int length , int color);
  */
 void
 delete();
-int
+
+void
 update_buffer_position();
+
 int
 get_buffer_position();
 
 int
 get_buffer_max_per_line();
-/*
- * Draws a rectangle
- */
+
+ /*
+  *  Ends the line and continue drawing characters in the bottom line.
+  */
+ void
+ nextLine();
+
 #endif
