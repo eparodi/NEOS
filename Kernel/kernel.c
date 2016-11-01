@@ -9,6 +9,7 @@
 #include <rtc.h>
 #include  "include/timerTick.h"
 #include <pci.h>
+#include <rtl8139.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -87,31 +88,16 @@ void * initializeKernelBinary()
 
 int main()
 {
-	ncNewline();
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("Loading Interrupt Descriptor Table: ");
+
+	EntryPoint codeModule = (EntryPoint) sampleCodeModuleAddress;
+
 	setTick();
 	start_video_mode();
 	set_idt();
 	print_all_devices();
-	ncPrint("Finished.");
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
-	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
+	start_rtl8139();
+	codeModule();
 
-	ncPrint("[Finished]");
 	while(1){
 		_hlt();
 	}

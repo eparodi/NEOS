@@ -39,6 +39,12 @@ irq_handler(int irq_number){
       add_to_buffer();
       //update_screen();
       break;
+    case 0x09:
+    case 0x0A:
+    case 0x0B:
+      //NIC
+      print_string("Hola!",0xffffff);
+    break;
   }
 }
 

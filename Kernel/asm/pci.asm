@@ -1,4 +1,5 @@
 GLOBAL _pci_read_reg
+section .text
 ; -----------------------------------------------------------------------------
 ;	Gets the RAW data from the PCI.
 ;	Parameters:
