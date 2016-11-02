@@ -39,7 +39,13 @@ _irq04Handler();
 void
 _irq05Handler();
 
-/* 
+/*
+ *	RTL8139 interrupt.
+ */
+void
+_irq0BHandler();
+
+/*
  *	Clear Interrupts. The processor will not handle maskable interrupts.
  */
 void
@@ -51,20 +57,20 @@ _cli();
 void
 _sti();
 
-/* 
- *	Set a Mask for the Master PIC. A device is enabled if the value of its bit 
+/*
+ *	Set a Mask for the Master PIC. A device is enabled if the value of its bit
  *	is 1.
  *	Parameters:
  *		-mask: the mask applied.
  */
 void
-_picMasterMask(byte mask); 
+_picMasterMask(byte mask);
 
 /*
- *	Set a Mask for the Slave PIC. A device is enabled if the value of its bit 
+ *	Set a Mask for the Slave PIC. A device is enabled if the value of its bit
  *	is 1.
  *	Parameters:
- *		-mask: the mask applied. 
+ *		-mask: the mask applied.
  */
 void
 _picSlaveMask(byte mask);

@@ -4,6 +4,7 @@ GLOBAL _irq02Handler
 GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
+GLOBAL _irq0BHandler
 
 GLOBAL _sti
 GLOBAL _cli
@@ -80,6 +81,12 @@ _irq04Handler:
 ; -----------------------------------------------------------------------------
 _irq05Handler:
 	irqHandlerMaster 5
+
+; -----------------------------------------------------------------------------
+;	RTL8139 interrupt.
+; -----------------------------------------------------------------------------
+_irq0BHandler:
+	irqHandlerMaster 0Bh
 
 ; -----------------------------------------------------------------------------
 ;	Clear Interrupts. The processor will not handle maskable interrupts.

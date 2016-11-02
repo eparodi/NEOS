@@ -6,6 +6,7 @@
 #include "include/timerTick.h"
 #include "include/keyboard.h"
 #include "include/systemcall.h"
+#include "include/rtl8139.h"
 
 /* Pointer to the beggining of the Interrupt Descriptor Table. */
 static INT_DESCRIPTOR * idt = (INT_DESCRIPTOR *) 0x0;
@@ -44,6 +45,7 @@ irq_handler(int irq_number){
     case 0x0B:
       //NIC
       print_string("Hola!",0xffffff);
+      rtl_irq_handler();
     break;
   }
 }
@@ -55,7 +57,11 @@ set_idt(){
   // loads the keyboard.
   setup_idt_entry( IRQ_INDEX + 1 , 0x08 , (qword) &_irq01Handler, ACS_INT);
 
+  // loads the rtl8139.
+  setup_idt_entry( IRQ_INDEX + 0x0B , 0x08 , (qword) &_irq0BHandler, ACS_INT);
+
   _picMasterMask(0xFC);
+  _picSlaveMask(0x00);
   _sti();
 
   // load system calls.

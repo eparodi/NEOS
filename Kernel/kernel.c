@@ -95,6 +95,7 @@ int main()
 	start_video_mode();
 	set_idt();
 	print_all_devices();
+	initialize_device(0,0x20);
 	start_rtl8139();
 	codeModule();
 
