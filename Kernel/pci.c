@@ -60,7 +60,7 @@ print_all_devices(){
         aux[size] = 0;
         print_string(", HeaderType: 0x",0xffffff);
         print_string(aux,0xffffff);
-        data = _pci_read_reg(i,j,0x10);
+        data = _pci_read_reg(i,j,0x04);
         size = parse_int(aux,data,16);
         aux[size] = 0;
         print_string(", DATA: 0x",0xffffff);
@@ -75,5 +75,6 @@ void
 initialize_device(uint8_t bus, uint8_t dev_func) {
   uint32_t value = _pci_read_reg(bus,dev_func,0x04);
   value |= 0x04;
+  value &= 0xFFFFFFFD;
   _pci_write_reg(bus,dev_func,0x04,value);
 }
