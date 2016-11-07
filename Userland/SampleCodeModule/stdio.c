@@ -86,6 +86,11 @@ printf( const char * str, ...){
 					buf[aux] = 0;
 					puts(buf);
 					break;
+				case 'x':
+					aux = i_to_s(buf, va_arg(args, int), 16);
+					buf[aux] = 0;
+					puts(buf);
+					break;
 				default:
 					break;
 			}

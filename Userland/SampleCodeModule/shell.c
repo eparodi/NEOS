@@ -2,6 +2,7 @@
 #include "include/shell.h"
 #include "include/stdlib.h"
 #include "include/time.h"
+#include "include/net.h"
 
 void
 draw_fractal(int,int,int,int);
@@ -24,6 +25,7 @@ char buffer[MAX_SIZE]={0};
       printf("help           : Muestra el manual de ayuda.\n");
       printf("hour           : Muestra la hora actual.\n");
       printf("sleep          : La consola espera durante un tiempo.\n");
+      printf("mac            : Devuelve la direccion mac del dispositivo.\n");
     }else if(strcmp(buffer,"exit")==0){
       exit = 1;
     }else if(strncmp(buffer,"echo ",5)==0){
@@ -37,6 +39,9 @@ char buffer[MAX_SIZE]={0};
     }else if(strcmp(buffer,"sleep")==0){
       sleep(2400);
       printf("Dormi 10 segundos.\n");
+    }else if(strcmp(buffer,"mac")==0){
+      printf("MAC ADDRESS: ");
+      print_mac();
     }else{
       printf("No existe ese comando, use help para aclarar sus dudas.\n");
     }

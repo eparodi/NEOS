@@ -5,6 +5,8 @@
 #include "include/vsa_driver.h"
 #include "include/rtc.h"
 #include "include/timerTick.h"
+#include "include/rtl_driver.h"
+#include "./include/lib.h"
 
 /* The amount of system call in Linux API. */
 #define SYS_CALL_SIZE 190
@@ -78,6 +80,12 @@ write_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
  */
 void sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
 
+/*
+ * Returns the Mac Address.
+ */
+ void
+ get_mac_address(uint8_t * buf);
+
 void
 start_system_call(){
 	int i = 0;
@@ -88,6 +96,7 @@ start_system_call(){
 	syscall_vector[4] = (systemcall)&write_sc;
 	syscall_vector[13] = (systemcall)&time_sc;
 	syscall_vector[14] = (systemcall)&clear_screen;
+  syscall_vector[15] = (systemcall)&get_mac_address;
 	syscall_vector[100] = (systemcall)&sleep_sc;
 }
 
@@ -133,4 +142,9 @@ time_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 void
 sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 	sleep(_rbx);
+}
+
+void
+get_mac_address(uint8_t * buf){
+  copy_mac(buf);
 }

@@ -86,7 +86,7 @@ _irq05Handler:
 ;	RTL8139 interrupt.
 ; -----------------------------------------------------------------------------
 _irq0BHandler:
-	irqHandlerMaster 0Bh
+	irqHandlerMaster 11
 
 ; -----------------------------------------------------------------------------
 ;	Clear Interrupts. The processor will not handle maskable interrupts.
@@ -103,7 +103,7 @@ _sti:
 	ret
 
 ; -----------------------------------------------------------------------------
-;	Set a Mask for the Master PIC. A device is enabled if the value of its bit
+;	Set a Mask for the Master PIC. A device is disabled if the value of its bit
 ;	is 1.
 ;	Parameters:
 ;		-rdi: the mask applied.
@@ -114,7 +114,7 @@ _picMasterMask:
     ret
 
 ; -----------------------------------------------------------------------------
-;	Set a Mask for the Slave PIC. A device is enabled if the value of its bit
+;	Set a Mask for the Slave PIC. A device is disabled if the value of its bit
 ;	is 1.
 ;	Parameters:
 ;		-rdi: the mask applied.

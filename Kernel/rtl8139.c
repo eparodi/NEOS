@@ -3,6 +3,7 @@
 #include "./include/types.h"
 #include "./include/vsa_driver.h"
 #include "./include/debug.h"
+
 #define IOADDRESS 0xC000
 
 // wiki.osdev.org/RTL8139
@@ -34,7 +35,7 @@ start_rtl8139(){
   // Set mode.
   _out_port_32( IOADDRESS + 0x44, 0xf | (1 << 7));
   // Start Receiver and Transmiter
-  _out_port_16( IOADDRESS + 0x37, 0xFF); //0x0C
+  _out_port_16( IOADDRESS + 0x37, 0x0C); //0x0C
   data = _in_port_32(IOADDRESS +0x40);
   // Set DMA size.
   _out_port_32( IOADDRESS + 0x40, data | 0x07);
@@ -84,7 +85,7 @@ print_mac(){
 }
 
 void
-get_mac(){
+get_mac2(){
   uint32_t data;
   data = _in_port_32(IOADDRESS);
   mac_addr[0] = data;
@@ -109,14 +110,14 @@ create_and_send_custom_message(){
     data[j] = mac_addr[i];
     j++;
   }
-  data[j++] = 0x80;
   data[j++] = 0x00;
+  data[j++] = 0x50;
   data[j++] = 'h';
-  send_message(data,100);
+  send_message2(data,0x50);
 }
 
 int
-send_message(uint8_t * data, uint32_t length){
+send_message2(uint8_t * data, uint32_t length){
   uint32_t reg,size,reg_data;
   //uint32_t reg2;
   char aux[20];

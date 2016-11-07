@@ -26,6 +26,8 @@ typedef struct{
 
 /* Interrupt request first index */
 #define IRQ_INDEX 0x20
+#define IRQ_SLAVE_INDEX 0x70
+
 /* System Call index */
 #define SYS_CALL_INDEX 0x80
 
