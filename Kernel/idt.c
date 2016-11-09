@@ -6,7 +6,7 @@
 #include "include/timerTick.h"
 #include "include/keyboard.h"
 #include "include/systemcall.h"
-#include "include/rtl8139.h"
+#include "include/rtl_driver.h"
 
 /* Pointer to the beggining of the Interrupt Descriptor Table. */
 static INT_DESCRIPTOR * idt = (INT_DESCRIPTOR *) 0x0;

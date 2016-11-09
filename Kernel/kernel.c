@@ -9,7 +9,6 @@
 #include <rtc.h>
 #include  "include/timerTick.h"
 #include <pci.h>
-#include <rtl8139.h>
 #include <rtl_driver.h>
 
 extern uint8_t text;

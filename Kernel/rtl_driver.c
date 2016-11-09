@@ -5,7 +5,8 @@
 
 #define MAC_ADDRESS_LENGTH 6
 #define IOADDRESS 0xC000
-
+#define IRQ_ROK_REG 0x0001
+#define IRQ_TOK_REG 0x0004
 typedef struct rtl_t{
   uint8_t rx_buffer[8208];
   uint8_t tx_buffer[4][1024];
@@ -40,7 +41,6 @@ start_rtl() {
   get_mac();
   sendCustomPackage();
 
-  //print_debug();
 }
 
 void
@@ -107,4 +107,21 @@ print_debug() {
   print_string(aux,0xffffff);
   print_string("\n",0xffffff);
   print_string(rtl_info.rx_buffer,0xffffff);
+}
+
+void
+rtl_irq_handler() {
+  uint16_t check_int = _in_port_16(IOADDRESS + 0x3E);
+  int size;
+  char aux[30];
+  if ( (check_int & IRQ_ROK_REG ) != 0){
+    print_string("RECIBIDO\n",0xff0000);
+  }else if ( (check_int & IRQ_TOK_REG) != 0){
+    print_string("ENVIADO\n",0x0000ff);
+  }else {
+    size = parse_int(aux,check_int,16);
+    aux[size] = 0;
+    print_string(aux,0xffffff);
+  }
+  _out_port_16(IOADDRESS + 0x3E, 0x1);
 }

@@ -19,6 +19,6 @@ uint16_t
 _in_port_16(uint16_t address);
 
 uint32_t
-_in_port_32(uint16_t address);
+_in_port_3(uint16_t address);
 
 #endif
