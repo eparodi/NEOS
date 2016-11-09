@@ -33,12 +33,14 @@ start_rtl() {
   _out_port_32( IOADDRESS + 0x28, (uint32_t) rtl_info.tx_buffer[2]);
   _out_port_32( IOADDRESS + 0x2C, (uint32_t) rtl_info.tx_buffer[3]);
   // Set interruptions.
-  _out_port_16( IOADDRESS + 0x3C , 0xFFFF );
+  _out_port_16( IOADDRESS + 0x3C , 0x000F );
   // Start Receiver and Transmiter
   _out_port_8( IOADDRESS + 0x37, 0x0C);
 
   get_mac();
   sendCustomPackage();
+
+  //print_debug();
 }
 
 void
@@ -91,4 +93,18 @@ mem_cpy(uint8_t * buffer, uint8_t * cpy, uint64_t length){
 void
 copy_mac(uint8_t * buffer) {
   mem_cpy(buffer, rtl_info.mac_addr,6);
+}
+
+void
+print_debug() {
+  int size;
+  uint16_t data;
+  char aux[30];
+
+  data = _in_port_16(IOADDRESS + 0x3E);
+  size = parse_int(aux,data,10);
+  aux[size] = 0;
+  print_string(aux,0xffffff);
+  print_string("\n",0xffffff);
+  print_string(rtl_info.rx_buffer,0xffffff);
 }

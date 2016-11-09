@@ -8,20 +8,20 @@ GLOBAL _in_port_32
 section .text
 
 _out_port_8:
-  mov rax, rdi
-  mov rdx, rsi
+  mov rdx, rdi
+  mov rax, rsi
   out dx, al
   ret
 
 _out_port_16:
-  mov rax, rdi
-  mov rdx, rsi
+  mov rdx, rdi
+  mov rax, rsi
   out dx, ax
   ret
 
 _out_port_32:
-  mov rax, rdi
-  mov rdx, rsi
+  mov rdx, rdi
+  mov rax, rsi
   out dx, eax
   ret
 

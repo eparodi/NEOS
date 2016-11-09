@@ -75,6 +75,5 @@ void
 initialize_device(uint8_t bus, uint8_t dev_func) {
   uint32_t value = _pci_read_reg(bus,dev_func,0x04);
   value |= 0x04;
-  value &= 0xFFFFFFFD;
   _pci_write_reg(bus,dev_func,0x04,value);
 }

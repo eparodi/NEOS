@@ -38,11 +38,10 @@ irq_handler(int irq_number){
       break;
     case 0x01:
       add_to_buffer();
-      //update_screen();
       break;
     case 0x0B:
       //NIC
-      print_string("Hola!",0xffffff);
+      print_string("Hola!\n",0xffffff);
       rtl_irq_handler();
     break;
   }
@@ -50,6 +49,7 @@ irq_handler(int irq_number){
 
 void
 set_idt(){
+  _cli();
   // loads the timer tick.
   setup_idt_entry( IRQ_INDEX , 0x08 , (qword) &_irq00Handler, ACS_INT);
   // loads the keyboard.
@@ -57,7 +57,6 @@ set_idt(){
 
   // loads the rtl8139.
   setup_idt_entry( IRQ_INDEX + 0x0B , 0x08 , (qword) &_irq0BHandler, ACS_INT);
-  setup_idt_entry( IRQ_SLAVE_INDEX + 0x0B , 0x08 , (qword) &_irq0BHandler, ACS_INT);
 
   _picMasterMask(0x00);
   _picSlaveMask(0x00);
