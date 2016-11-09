@@ -5,9 +5,6 @@
 #include "include/net.h"
 
 void
-draw_fractal(int,int,int,int);
-
-void
 start_shell(){
 char buffer[MAX_SIZE]={0};
   buffer[0] = 0;

@@ -27,12 +27,12 @@ _out_port_32:
 
 _in_port_8:
   mov rdx, rdi
-  in  eax, dx
+  in  al, dx
   ret
 
 _in_port_16:
   mov rdx, rdi
-  in  eax, dx
+  in  ax, dx
   ret
 
 _in_port_32:
