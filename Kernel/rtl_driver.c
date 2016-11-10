@@ -80,9 +80,6 @@ send_message(Package * data) {
   uint16_t length = data-> length + MAC_ADDRESS_LENGTH * 2 + 2;
   uint8_t * buf = rtl_info.tx_buffer[rtl_info.tx_num];
 
-  int size;
-  uint8_t dat;
-  char aux[30];
   // waits until the previous package is free.
   while (!(_in_port_32(status_address) & 0x2000)){}
 
@@ -90,13 +87,6 @@ send_message(Package * data) {
   mem_cpy(&buf[MAC_ADDRESS_LENGTH],rtl_info.mac_addr,MAC_ADDRESS_LENGTH);
   mem_cpy(&buf[MAC_ADDRESS_LENGTH * 2],&(data->length),2);
   mem_cpy(&buf[MAC_ADDRESS_LENGTH * 2 + 2],data->data,data->length);
-  for ( int i = 0 ; i < length ; i++ ){
-    dat = rtl_info.tx_buffer[rtl_info.tx_num][i];
-    size = parse_int(aux,dat,16);
-    aux[size] = 0;
-    print_string(aux,0xff00ff);
-  }
-  print_string("\n",0);
   _out_port_32(status_address,length);
   rtl_info.tx_num++;
   rtl_info.tx_num &= 0x03;
