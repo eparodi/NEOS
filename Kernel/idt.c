@@ -34,6 +34,7 @@ irq_handler(int irq_number){
   switch( irq_number ){
     case 0x00:
       // Set Timer Tick Interrupt.
+      //sendCustomPackage();
       tick();
       break;
     case 0x01:
@@ -41,7 +42,6 @@ irq_handler(int irq_number){
       break;
     case 0x0B:
       //NIC
-      print_string("Hola!\n",0xffffff);
       rtl_irq_handler();
     break;
   }

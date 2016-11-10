@@ -73,7 +73,13 @@ print_all_devices(){
 
 void
 initialize_device(uint8_t bus, uint8_t dev_func) {
+    char aux[30];
+    int size;
   uint32_t value = _pci_read_reg(bus,dev_func,0x04);
+  size = parse_int(aux,value,16);
+  aux[size] = 0;
+  print_string(aux,0xffffff);
   value |= 0x04;
   _pci_write_reg(bus,dev_func,0x04,value);
+
 }

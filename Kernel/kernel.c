@@ -94,7 +94,7 @@ int main()
 	setTick();
 	start_video_mode();
 	set_idt();
-	initialize_device(0,0x20);
+	initialize_device(0,0x18);
 	start_rtl();
 	codeModule();
 
