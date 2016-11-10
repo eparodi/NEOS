@@ -26,11 +26,11 @@ start_rtl() {
   _out_port_8( IOADDRESS + 0x52, 0x0);
   // Software reset.
   _out_port_8( IOADDRESS + 0x37, 0x10);
-  while( (_in_port_8(IOADDRESS + 0x37) & 0x10) ) {}
+  while( (_in_port_8(IOADDRESS + 0x17) & 0x10) ) {}
 
   _out_port_32( IOADDRESS + 0x40, 0x03000700);
   // Set Receiver Mode.
-  _out_port_8( IOADDRESS + 0x44, 0x0000000f | (1 << 7));
+  _out_port_32( IOADDRESS + 0x44, 0x3f | (1 << 7));
   // Set Receiver and Transmiter buffer.
   _out_port_32( IOADDRESS + 0x30, (uint32_t) rtl_info.rx_buffer);
   _out_port_32( IOADDRESS + 0x20, (uint32_t) &rtl_info.tx_buffer[0][0]);
@@ -43,12 +43,6 @@ start_rtl() {
   _out_port_8( IOADDRESS + 0x37, 0x0C);
 
   get_mac();
-  sendCustomPackage();
-  sendCustomPackage();
-  sendCustomPackage();
-  sendCustomPackage();
-  sendCustomPackage();
-
 }
 
 void
@@ -68,8 +62,9 @@ void
 sendCustomPackage() {
   Package pkg;
   uint8_t mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
-  pkg.data = "hello world!";
-  pkg.length = 12;
+
+  pkg.data = "SON TODOS PUTOS, VIVA PERON LA CONCHA DE TU HERMANA! MAKE AMERICA GREAT AGAIN";
+  pkg.length = 78;
   pkg.mac_dest = mac;
   send_message(&pkg);
 }
@@ -125,6 +120,13 @@ rtl_irq_handler() {
   char aux[30];
   if ( (check_int & IRQ_ROK_REG ) != 0){
     print_string("RECIBIDO\n",0xff0000);
+    for ( int i = 0 ; i < 30 ; i++ ){
+      size = parse_int(aux,rtl_info.rx_buffer[i],16);
+      aux[size] = 0;
+      print_string(aux,0xffffff);
+    }
+    print_string("\n", 0xff0000);
+    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],0xff0000);
     _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
   }else if ( (check_int & IRQ_TOK_REG) != 0){
     print_string("ENVIADO\n",0x0000ff);

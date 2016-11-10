@@ -13,7 +13,6 @@ SECTION .text
 ;		-rax: the return of the system call.
 ; -----------------------------------------------------------------------------
 _sys_call:
-	
 	mov r8, rax
 	mov r9, rbx
 	call system_call_interrupt

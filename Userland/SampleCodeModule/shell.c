@@ -39,6 +39,8 @@ char buffer[MAX_SIZE]={0};
     }else if(strcmp(buffer,"mac")==0){
       printf("MAC ADDRESS: ");
       print_mac();
+    }else if(strncmp(buffer,"wall ",5)==0){
+      send_message_broadcast(buffer+5);
     }else{
       printf("No existe ese comando, use help para aclarar sus dudas.\n");
     }

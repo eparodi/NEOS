@@ -86,6 +86,9 @@ void sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi );
  void
  get_mac_address(uint8_t * buf);
 
+int
+send_message_sc(uint8_t * mac, uint8_t * message, int size );
+
 void
 start_system_call(){
 	int i = 0;
@@ -97,6 +100,7 @@ start_system_call(){
 	syscall_vector[13] = (systemcall)&time_sc;
 	syscall_vector[14] = (systemcall)&clear_screen;
   syscall_vector[15] = (systemcall)&get_mac_address;
+  syscall_vector[16] = (systemcall)&send_message_sc;
 	syscall_vector[100] = (systemcall)&sleep_sc;
 }
 
@@ -147,4 +151,14 @@ sleep_sc(qword _rbx, qword _rcx, qword _rdx, qword _rdi, qword _rsi ){
 void
 get_mac_address(uint8_t * buf){
   copy_mac(buf);
+}
+
+int
+send_message_sc(uint8_t * mac, uint8_t * message, int size ){
+  Package pkg;
+  pkg.data = message;
+  pkg.length = size;
+  pkg.mac_dest = mac;
+  send_message(&pkg);
+  return size;
 }

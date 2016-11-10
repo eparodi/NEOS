@@ -16,3 +16,14 @@ print_mac() {
   }
   printf("\n");
 }
+
+void
+send_message_broadcast(const char * message) {
+  unsigned char dest_mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
+  int size = strlen(message);
+  _send_message(dest_mac,message,size);
+}
+
+void check(){
+  printf("check");
+}
