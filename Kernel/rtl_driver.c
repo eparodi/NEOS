@@ -7,12 +7,14 @@
 #define IOADDRESS 0xC000
 #define IRQ_ROK_REG 0x0001
 #define IRQ_TOK_REG 0x0004
+#define RX_BUFFER_SIZE 0x2000 // 8KB
 
 typedef struct rtl_t{
-  uint8_t rx_buffer[8208];
+  uint8_t rx_buffer[RX_BUFFER_SIZE];
   uint8_t tx_buffer[2048][4];
   uint8_t mac_addr[6];
   uint8_t tx_num; // the number of the buffer to write. From 0 to 3
+  uint16_t rx_index;
 }rtl_t;
 
 static rtl_t rtl_info;
@@ -21,6 +23,7 @@ void
 start_rtl() {
   // Initializes rtl_info:
   rtl_info.tx_num = 0;
+  rtl_info.rx_index = 0;
 
   // Initializes rtl8139.
   _out_port_8( IOADDRESS + 0x52, 0x0);
@@ -57,17 +60,17 @@ get_mac(){
   rtl_info.mac_addr[4] = data;
   rtl_info.mac_addr[5] = data >> 8;
 }
-
+/*
 void
 sendCustomPackage() {
   Package pkg;
   uint8_t mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
 
-  pkg.data = "SON TODOS PUTOS, VIVA PERON LA CONCHA DE TU HERMANA! MAKE AMERICA GREAT AGAIN";
-  pkg.length = 78;
+  pkg.data = "MAKE AMERICA GREAT AGAIN";
+  pkg.length = 24;
   pkg.mac_dest = mac;
   send_message(&pkg);
-}
+}*/
 
 void
 send_message(Package * data) {
@@ -118,15 +121,9 @@ rtl_irq_handler() {
   uint16_t check_int = _in_port_16(IOADDRESS + 0x3E);
   int size;
   char aux[30];
+
   if ( (check_int & IRQ_ROK_REG ) != 0){
-    print_string("RECIBIDO\n",0xff0000);
-    for ( int i = 0 ; i < 30 ; i++ ){
-      size = parse_int(aux,rtl_info.rx_buffer[i],16);
-      aux[size] = 0;
-      print_string(aux,0xffffff);
-    }
-    print_string("\n", 0xff0000);
-    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],0xff0000);
+    rtl_receive();
     _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
   }else if ( (check_int & IRQ_TOK_REG) != 0){
     print_string("ENVIADO\n",0x0000ff);
@@ -139,4 +136,48 @@ rtl_irq_handler() {
     print_string("\n",0xffffff);
   }
   _out_port_8(0xA0,0x20);
+}
+
+void
+rtl_receive() {
+  int size,length;
+  char aux[30];
+  uint8_t * buf = &(rtl_info.rx_buffer[rtl_info.rx_index]);
+  uint16_t index = rtl_info.rx_index;
+
+  length = (buf[index + 4 + MAC_ADDRESS_LENGTH * 2]) + (buf[index + 4 + MAC_ADDRESS_LENGTH * 2 + 1] << 8);
+  length += 4 + MAC_ADDRESS_LENGTH * 2 + 2;
+
+  rtl_info.rx_index += length;
+  rtl_info.rx_index += 4 - rtl_info.rx_index%4;
+  rtl_info.rx_index %= RX_BUFFER_SIZE;
+
+  _out_port_16(IOADDRESS + 0x38,rtl_info.rx_index - 0x10);
+  print_string("RECIBIDO DE:  ",0xff0000);
+  print_mac(&buf[index+ 4 + MAC_ADDRESS_LENGTH]);
+  print_string("\n", 0xff0000);
+  print_string("Longitud: ",0xffffff);
+  size = parse_int(aux, length, 10);
+  aux[size] = 0;
+  print_string(aux, 0xffffff);
+  print_string("\n", 0xff0000);
+  print_string(&buf[4 + MAC_ADDRESS_LENGTH * 2 + 2],0xff0000);
+  print_string("\n", 0xff0000);
+}
+
+void
+print_mac(uint8_t * mac_dir){
+  int size;
+  char aux[30];
+  for ( int i = 0 ; i < MAC_ADDRESS_LENGTH ; i++ ){
+    size = parse_int(aux, mac_dir[i], 16);
+    if ( size == 1 ){
+      print_string("0", 0xffffff);
+    }
+    aux[size] = 0;
+    print_string(aux, 0xffffff);
+    if ( i != 5 ){
+      print_string(":", 0xffffff);
+    }
+  }
 }
