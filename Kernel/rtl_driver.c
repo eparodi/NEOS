@@ -20,6 +20,9 @@ typedef struct rtl_t{
 static rtl_t rtl_info;
 
 void
+print_mac(uint8_t * mac_dir, uint32_t color);
+
+void
 start_rtl() {
   // Initializes rtl_info:
   rtl_info.tx_num = 0;
@@ -157,11 +160,12 @@ rtl_irq_handler() {
     }
     print_string("\n",0x000000);
     print_string("Mensaje de ",color_msj);
+    print_mac(&rtl_info.rx_buffer[10],color_msj);/*
     for ( int i = 10 ; i < 16 ; i++ ){
       size = parse_int(aux,rtl_info.rx_buffer[i],16);
       aux[size] = 0;
       print_string(aux,color_msj);
-    }
+    }*/
     print_string("\n", 0xff0000);
     print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],color_msj);
     //print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6 +20],0xff0000);
@@ -215,18 +219,18 @@ rtl_receive() {
 } */
 
 void
-print_mac(uint8_t * mac_dir){
+print_mac(uint8_t * mac_dir, uint32_t color){
   int size;
   char aux[30];
   for ( int i = 0 ; i < MAC_ADDRESS_LENGTH ; i++ ){
     size = parse_int(aux, mac_dir[i], 16);
     if ( size == 1 ){
-      print_string("0", 0xffffff);
+      print_string("0", color);
     }
     aux[size] = 0;
-    print_string(aux, 0xffffff);
+    print_string(aux, color);
     if ( i != 5 ){
-      print_string(":", 0xffffff);
+      print_string(":", color);
     }
   }
 }
