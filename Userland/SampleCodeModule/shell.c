@@ -41,6 +41,8 @@ char buffer[MAX_SIZE]={0};
       print_mac();
     }else if(strncmp(buffer,"wall ",5)==0){
       send_message_broadcast(buffer+5);
+    }else if(strncmp(buffer,"wabb ",5)==0){
+      send_message_beta(buffer+5);
     }else{
       printf("No existe ese comando, use help para aclarar sus dudas.\n");
     }
