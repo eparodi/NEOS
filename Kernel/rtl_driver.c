@@ -133,8 +133,32 @@ rtl_irq_handler() {
     int color_msj=0xff0000;
     //VERIFICA SI ES WHISP O BROADCASTT
     int pos_mac=0;
-    int whisp=0;
-    int broad=0;
+    int whisp=1;
+    int broad=1;
+    uint8_t * dest_mac = &rtl_info.rx_buffer[4];
+    for ( int i = 0 ; i < MAC_ADDRESS_LENGTH; i++){
+      if ( whisp ){
+        if ( dest_mac[i] != rtl_info.mac_addr[i] ){
+          whisp = 0;
+        }
+      }
+      if ( broad ){
+        if ( dest_mac[i] != 0xFF ){
+          broad = 0;
+        }
+      }
+    }
+    if(whisp){
+       color_msj=0xFF69b4;
+    }else if(broad){
+       color_msj=0xFFA500;
+    }else{
+      _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
+      start_rtl();
+      _out_port_8(0xA0,0x20);
+      return;
+    }
+    /*
     for ( int i = 4 ; i < 10 ; i++ ){
       size = parse_int(aux,rtl_info.rx_buffer[i],16);
       aux[size] = 0;
@@ -157,7 +181,7 @@ rtl_irq_handler() {
     }
     if(broad>3){
        color_msj=0xFFA500;
-    }
+    }*/
     print_string("\n",0x000000);
     print_string("Mensaje de ",color_msj);
     print_mac(&rtl_info.rx_buffer[10],color_msj);/*
@@ -233,4 +257,15 @@ print_mac(uint8_t * mac_dir, uint32_t color){
       print_string(":", color);
     }
   }
+}
+
+int
+check_my_mac(uint8_t * mac){
+  int i;
+  for ( int i = 0 ; i < MAC_ADDRESS_LENGTH; i++ ){
+    if ( mac[i] != rtl_info.mac_addr[i] ){
+      return 0;
+    }
+  }
+  return 1;
 }
