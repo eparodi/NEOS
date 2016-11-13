@@ -24,6 +24,14 @@ send_message_broadcast(const char * message) {
   _send_message(dest_mac,message,size);
 }
 
+void
+send_message_beta(const char * message) {
+  unsigned char dest_mac[6] = { 0xDE,0xAD,0xBE,0xAF,0x22,0x22 };
+  int size = strlen(message);
+  _send_message(dest_mac,message,size);
+}
+
+
 void check(){
   printf("check");
 }

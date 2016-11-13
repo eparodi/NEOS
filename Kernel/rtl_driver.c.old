@@ -1,4 +1,4 @@
-#include <port.h>
+#seinclude <port.h>
 #include <rtl_driver.h>
 #include <vsa_driver.h>
 #include <debug.h>
@@ -103,12 +103,12 @@ void
 print_debug() {
   int size;
   uint16_t data;
-  char aux[30]={1};
+  char aux[30];
 
   data = _in_port_16(IOADDRESS + 0x3E);
   size = parse_int(aux,data,10);
   aux[size] = 0;
-  print_string(data,0xffffff);
+  print_string(aux,0xffffff);
   print_string("\n",0xffffff);
   print_string(rtl_info.rx_buffer,0xffffff);
 }
@@ -127,15 +127,12 @@ rtl_irq_handler() {
     }
     print_string("\n", 0xff0000);
     print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],0xff0000);
-    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6 +20],0xff0000);
     _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
-    _out_port_16(IOADDRESS + 0X37, 0x04);
-    //print_debug();
-    start_rtl();
+    //magia que recomienda negros
+    //_out_port_16(IOADDRESS + 0x37, 0x04);
   }else if ( (check_int & IRQ_TOK_REG) != 0){
     print_string("ENVIADO\n",0x0000ff);
     _out_port_16(IOADDRESS + 0x3E, IRQ_TOK_REG);
-    start_rtl();
   }else {
     print_string("Error Code: ", 0x00ff00);
     size = parse_int(aux,check_int,16);
