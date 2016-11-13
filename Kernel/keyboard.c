@@ -154,3 +154,26 @@ int read_from_buffer(int numOfChars,char * str){
 	return j;
 
 }
+
+// Rewrites the line written before.
+void
+restart_line(){
+	int i;
+	print_string("$> ",0xffffff);
+	if (read_index == write_index){
+		return;
+	}
+	for (i = read_index; i % (BUFFER_SIZE-1) < write_index + 1; i++ ){
+		print_char(buffer[i % (BUFFER_SIZE-1)],0xffffff);
+	}
+	//update_cursor();
+}
+
+void
+erase_cursor(){
+	if (read_index == write_index){
+		return;
+	}else{
+		delete();
+	}
+}

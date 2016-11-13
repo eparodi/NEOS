@@ -15,14 +15,16 @@ char buffer[MAX_SIZE]={0};
     scanf("%s",buffer);
     if(strcmp(buffer,"help")==0){
       printf("Comandos de NEOShell:\n");
-      printf("clear          : Borra la pantalla.\n");
-      printf("date           : Muestra la fecha actual.\n");
-      printf("echo [message] : Muestra una linea de texto [message].\n");
-      printf("exit           : Cierra la consola.\n");
-      printf("help           : Muestra el manual de ayuda.\n");
-      printf("hour           : Muestra la hora actual.\n");
-      printf("sleep          : La consola espera durante un tiempo.\n");
-      printf("mac            : Devuelve la direccion mac del dispositivo.\n");
+      printf("clear              : Borra la pantalla.\n");
+      printf("date               : Muestra la fecha actual.\n");
+      printf("echo [message]     : Muestra una linea de texto [message].\n");
+      printf("exit               : Cierra la consola.\n");
+      printf("help               : Muestra el manual de ayuda.\n");
+      printf("hour               : Muestra la hora actual.\n");
+      printf("sleep              : La consola espera durante un tiempo.\n");
+      printf("mac                : Devuelve la direccion mac del dispositivo.\n");
+      printf("msg [mac][message] : Manda un mensaje a la mac deseada.\n");
+      printf("wall [message]     : Manda un mensaje broadcast.\n");
     }else if(strcmp(buffer,"exit")==0){
       exit = 1;
     }else if(strncmp(buffer,"echo ",5)==0){
@@ -41,6 +43,10 @@ char buffer[MAX_SIZE]={0};
       print_mac();
     }else if(strncmp(buffer,"wall ",5)==0){
       send_message_broadcast(buffer+5);
+    }else if(strncmp(buffer,"wabb ",5)==0){
+      send_message_beta(buffer+5);
+    }else if(strncmp(buffer,"msg ",4)==0){
+      msg_shell(buffer+4);
     }else{
       printf("No existe ese comando, use help para aclarar sus dudas.\n");
     }

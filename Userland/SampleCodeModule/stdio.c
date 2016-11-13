@@ -9,31 +9,6 @@
 
 
 int
-strncmp( const char * str1 , const char * str2 , int length ){
-	int i, aux;
-	for ( i = 0; i < length ; i++ ){
-		aux = str1[i] - str2[i];
-		if ( aux ){
-			return aux;
-		}
-	}
-	return 0;
-}
-
-int strcmp(const char * str1,const char * str2){
-	int i, aux;
-	for ( i = 0; str1[i]!=0 || str2[i]!=0 ; i++ ){
-		aux = str1[i] - str2[i];
-		if ( aux ){
-			return aux;
-		}
-
-	}
-
-	return str1[i]-str2[i];
-}
-
-int
 putchar( char letter ){
 	write(STD_OUT, &letter,1);
 	return letter;
@@ -52,13 +27,6 @@ getc(){
 int
 puts( const char * str ){
 	return write(1, str, strlen(str));
-}
-
-int
-strlen( const char * str ){
-	int size = 0;
-	while( str[size++] != '\0' ){}
-	return size-1;
 }
 
 int

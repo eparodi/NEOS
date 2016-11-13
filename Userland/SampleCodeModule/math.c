@@ -76,11 +76,24 @@ s_to_i(char* buffer){
 		size++;
 	}
 	factor = size -1;
-i=0;
+	i=0;
 
 	while(buffer[i] != '\0'){
 		number+= pow(10,factor--)*(buffer[i]-'0');
 		i++;
 	}
 	return number*posNum;
+}
+
+int
+char_hexa_to_i(char c){
+	if ( c >= '0' && c <= '9' ){
+		return c - '0';
+	}else if ( c >= 'A' || c <= 'F'){
+		return 10 + c - 'A';
+	}else if ( c >= 'a' || c <= 'f') {
+		return 10 + c - 'a';
+	}else{
+		return -1;
+	}
 }
