@@ -58,6 +58,8 @@ get_mac(){
   rtl_info.mac_addr[5] = data >> 8;
 }
 
+uint8_t broadcast_mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
+
 void
 sendCustomPackage() {
   Package pkg;
@@ -119,17 +121,47 @@ rtl_irq_handler() {
   int size;
   char aux[30];
   if ( (check_int & IRQ_ROK_REG ) != 0){
-    print_string("RECIBIDO\n",0xff0000);
-    for ( int i = 0 ; i < 30 ; i++ ){
+    int color_msj=0xff0000;
+    //VERIFICA SI ES WHISP O BROADCASTT
+    int pos_mac=0;
+    int whisp=0;
+    int broad=0;
+    for ( int i = 4 ; i < 10 ; i++ ){
       size = parse_int(aux,rtl_info.rx_buffer[i],16);
       aux[size] = 0;
-      print_string(aux,0xffffff);
+      char aux2[30];
+      int size2;
+      size2 = parse_int(aux2,rtl_info.mac_addr[pos_mac],16);
+      aux2[size2]=0;
+      if(aux[0]==aux2[0]){
+          whisp++;
+      }
+      size2=parse_int(aux2,broadcast_mac[pos_mac],16);
+      aux[size2]=0;
+      if(aux[0]==aux2[0]){
+          broad++;
+      }
+      pos_mac++;
+    }
+    if(whisp==5){
+       color_msj=0xFF69b4;
+    }
+    if(broad>3){
+       color_msj=0xFFA500;
+    }
+    print_string("\n",0x000000);
+    print_string("Mensaje de ",color_msj);
+    for ( int i = 10 ; i < 16 ; i++ ){
+      size = parse_int(aux,rtl_info.rx_buffer[i],16);
+      aux[size] = 0;
+      print_string(aux,color_msj);
     }
     print_string("\n", 0xff0000);
-    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],0xff0000);
-    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6 +20],0xff0000);
+    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],color_msj);
+    //print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6 +20],0xff0000);
+    print_string("\n",0);
     _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
-    _out_port_16(IOADDRESS + 0X37, 0x04);
+    //_out_port_16(IOADDRESS + 0X37, 0x04);
     //print_debug();
     start_rtl();
   }else if ( (check_int & IRQ_TOK_REG) != 0){
