@@ -2,6 +2,7 @@
 #include <rtl_driver.h>
 #include <vsa_driver.h>
 #include <debug.h>
+#include <keyboard.h>
 
 #define MAC_ADDRESS_LENGTH 6
 #define IOADDRESS 0xC000
@@ -23,7 +24,17 @@ void
 print_mac(uint8_t * mac_dir, uint32_t color);
 
 void
+get_mac();
+
+void
 start_rtl() {
+
+  //Addresses
+  uint32_t ad1 = (uint32_t) &rtl_info.tx_buffer[0][0];
+  uint32_t ad2 = (uint32_t) &rtl_info.tx_buffer[1][0];
+  uint32_t ad3 = (uint32_t) &rtl_info.tx_buffer[2][0];
+  uint32_t ad4 = (uint32_t) &rtl_info.tx_buffer[3][0];
+  uint32_t adrx = (uint32_t) rtl_info.rx_buffer;
   // Initializes rtl_info:
   rtl_info.tx_num = 0;
   rtl_info.rx_index = 0;
@@ -38,11 +49,11 @@ start_rtl() {
   // Set Receiver Mode.
   _out_port_32( IOADDRESS + 0x44, 0x3f | (1 << 7));
   // Set Receiver and Transmiter buffer.
-  _out_port_32( IOADDRESS + 0x30, (uint32_t) rtl_info.rx_buffer);
-  _out_port_32( IOADDRESS + 0x20, (uint32_t) &rtl_info.tx_buffer[0][0]);
-  _out_port_32( IOADDRESS + 0x24, (uint32_t) &rtl_info.tx_buffer[1][0]);
-  _out_port_32( IOADDRESS + 0x28, (uint32_t) &rtl_info.tx_buffer[2][0]);
-  _out_port_32( IOADDRESS + 0x2C, (uint32_t) &rtl_info.tx_buffer[3][0]);
+  _out_port_32( IOADDRESS + 0x30, adrx);
+  _out_port_32( IOADDRESS + 0x20, ad1);
+  _out_port_32( IOADDRESS + 0x24, ad2);
+  _out_port_32( IOADDRESS + 0x28, ad3);
+  _out_port_32( IOADDRESS + 0x2C, ad4);
   // Set interruptions.
   _out_port_16( IOADDRESS + 0x3C , 0x000F );
   // Start Receiver and Transmiter
@@ -67,17 +78,6 @@ get_mac(){
 uint8_t broadcast_mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
 
 void
-sendCustomPackage() {
-  Package pkg;
-  uint8_t mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
-
-  pkg.data = "MAKE AMERICA GREAT AGAIN";
-  pkg.length = 24;
-  pkg.mac_dest = mac;
-  send_message(&pkg);
-}
-
-void
 send_message(Package * data) {
   uint16_t status_address = IOADDRESS + 0x10 + rtl_info.tx_num * 0x04;
   uint16_t length = data-> length + MAC_ADDRESS_LENGTH * 2 + 2;
@@ -88,7 +88,7 @@ send_message(Package * data) {
 
   mem_cpy(&buf[0],data->mac_dest,MAC_ADDRESS_LENGTH);
   mem_cpy(&buf[MAC_ADDRESS_LENGTH],rtl_info.mac_addr,MAC_ADDRESS_LENGTH);
-  mem_cpy(&buf[MAC_ADDRESS_LENGTH * 2],&(data->length),2);
+  mem_cpy(&buf[MAC_ADDRESS_LENGTH * 2],(uint8_t*)&(data->length),2);
   mem_cpy(&buf[MAC_ADDRESS_LENGTH * 2 + 2],data->data,data->length);
   _out_port_32(status_address,length);
   rtl_info.tx_num++;
@@ -108,20 +108,6 @@ copy_mac(uint8_t * buffer) {
 }
 
 void
-print_debug() {
-  int size;
-  uint16_t data;
-  char aux[30]={1};
-
-  data = _in_port_16(IOADDRESS + 0x3E);
-  size = parse_int(aux,data,10);
-  aux[size] = 0;
-  print_string(data,0xffffff);
-  print_string("\n",0xffffff);
-  print_string(rtl_info.rx_buffer,0xffffff);
-}
-
-void
 rtl_irq_handler() {
   uint16_t check_int = _in_port_16(IOADDRESS + 0x3E);
   int size;
@@ -132,7 +118,6 @@ rtl_irq_handler() {
     //rtl_receive();
     int color_msj=0xff0000;
     //VERIFICA SI ES WHISP O BROADCASTT
-    int pos_mac=0;
     int whisp=1;
     int broad=1;
     uint8_t * dest_mac = &rtl_info.rx_buffer[4];
@@ -191,7 +176,7 @@ rtl_irq_handler() {
       print_string(aux,color_msj);
     }*/
     print_string("\n", 0xff0000);
-    print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],color_msj);
+    print_string((char *)&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],color_msj);
     //print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6 +20],0xff0000);
     print_string("\n",0);
     restart_line();
@@ -262,7 +247,7 @@ print_mac(uint8_t * mac_dir, uint32_t color){
 int
 check_my_mac(uint8_t * mac){
   int i;
-  for ( int i = 0 ; i < MAC_ADDRESS_LENGTH; i++ ){
+  for ( i = 0 ; i < MAC_ADDRESS_LENGTH; i++ ){
     if ( mac[i] != rtl_info.mac_addr[i] ){
       return 0;
     }

@@ -2,6 +2,7 @@
 #include "include/math.h"
 #include <stdarg.h>
 #include "stdio.h"
+#include "include/string.h"
 
 #define STD_IN 		0
 #define STD_OUT		1

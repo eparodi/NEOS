@@ -24,4 +24,8 @@ int
 numberBoard(unsigned char);
 void
 update_cursor();
+void
+erase_cursor();
+void
+restart_line();
 #endif

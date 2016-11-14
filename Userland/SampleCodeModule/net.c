@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <net.h>
 
 #define MAC_ADDRESS_SIZE 17
 
@@ -13,7 +14,7 @@ print_mac() {
   unsigned char mac_addr[6];
   _get_mac(mac_addr);
   int i;
-  for ( int i = 0 ; i < 6 ; i++){
+  for ( i = 0 ; i < 6 ; i++){
     printf("%x",mac_addr[i]);
     if (mac_addr[i] < 0x10){
       printf("0");
@@ -28,13 +29,6 @@ print_mac() {
 void
 send_message_broadcast(const char * message) {
   unsigned char dest_mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
-  int size = strlen(message);
-  _send_message(dest_mac,message,size);
-}
-
-void
-send_message_beta(const char * message) {
-  unsigned char dest_mac[6] = { 0xDE,0xAD,0xBE,0xAF,0x22,0x22 };
   int size = strlen(message);
   _send_message(dest_mac,message,size);
 }

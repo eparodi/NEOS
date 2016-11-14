@@ -1,5 +1,5 @@
-#ifndef STDLIB_H
-#define STDLIB_H
+#ifndef STRING_H
+#define STRING_H
 
 /*
  * Compares n characters of two strings.
@@ -24,4 +24,8 @@
   */
  int
  strcmp(const char * str1,const char * str2);
+
+ int
+ is_hexa(const char ch);
+
 #endif

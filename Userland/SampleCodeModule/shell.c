@@ -3,6 +3,7 @@
 #include "include/stdlib.h"
 #include "include/time.h"
 #include "include/net.h"
+#include "include/string.h"
 
 void
 start_shell(){
@@ -43,8 +44,6 @@ char buffer[MAX_SIZE]={0};
       print_mac();
     }else if(strncmp(buffer,"wall ",5)==0){
       send_message_broadcast(buffer+5);
-    }else if(strncmp(buffer,"wabb ",5)==0){
-      send_message_beta(buffer+5);
     }else if(strncmp(buffer,"msg ",4)==0){
       msg_shell(buffer+4);
     }else{

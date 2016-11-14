@@ -16,4 +16,10 @@ mem_cpy(uint8_t * buffer, uint8_t * cpy, uint64_t length);
 void
 send_message(Package * data);
 
+void
+copy_mac(uint8_t * buffer);
+
+void
+rtl_irq_handler();
+
 #endif

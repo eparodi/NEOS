@@ -35,4 +35,7 @@ i_to_s(char * buffer, long number, int radix);
 int
 s_to_i(char* buffer);
 
+int
+char_hexa_to_i(char c);
+
 #endif
