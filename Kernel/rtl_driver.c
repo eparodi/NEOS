@@ -5,17 +5,38 @@
 #include <keyboard.h>
 
 #define MAC_ADDRESS_LENGTH 6
-#define IOADDRESS 0xC000
-#define IRQ_ROK_REG 0x0001
-#define IRQ_TOK_REG 0x0004
+#define IOADDRESS      0xC000
+//IRQ
+#define IRQ_ROK_REG    0x0001
+#define IRQ_TOK_REG    0x0004
+
+//BUFFER
 #define RX_BUFFER_SIZE 0x2000 // 8KB
+#define TX_BUFFER_SIZE 0x2048
+
+//PIC
+#define PIC_SLAVE_ADDR 0xA0
+#define PIC_ACKNOW     0x20
+
+//REGISTERS
+#define RTL_TSAD_1     0x20
+#define RTL_TSAD_2     0x24
+#define RTL_TSAD_3     0x28
+#define RTL_TSAD_4     0x2C
+#define RTL_RVAD       0x30
+#define RTL_COMMANDER  0x37
+#define RTL_IMR        0x3C
+#define RTL_ISR        0x3E
+#define RTL_TX_CONFIG  0x40
+#define RTL_RX_CONFIG  0x44
+#define RTL_CONFIG_1   0x52
 
 typedef struct rtl_t{
   uint8_t rx_buffer[RX_BUFFER_SIZE];
-  uint8_t tx_buffer[2048][4];
-  uint8_t mac_addr[6];
-  uint8_t tx_num; // the number of the buffer to write. From 0 to 3
-  uint16_t rx_index;
+  uint8_t tx_buffer[TX_BUFFER_SIZE][4];
+  uint8_t mac_addr[MAC_ADDRESS_LENGTH];
+  uint8_t tx_num;      // the number of the buffer to write. From 0 to 3
+  uint16_t rx_index;   // the current receiver index.
 }rtl_t;
 
 static rtl_t rtl_info;
@@ -40,24 +61,24 @@ start_rtl() {
   rtl_info.rx_index = 0;
 
   // Initializes rtl8139.
-  _out_port_8( IOADDRESS + 0x52, 0x0);
+  _out_port_8( IOADDRESS + RTL_CONFIG_1, 0x0);
   // Software reset.
-  _out_port_8( IOADDRESS + 0x37, 0x10);
-  while( (_in_port_8(IOADDRESS + 0x17) & 0x10) ) {}
+  _out_port_8( IOADDRESS + RTL_COMMANDER, 0x10);
+  while( (_in_port_8(IOADDRESS + RTL_COMMANDER) & 0x10) ) {}
 
-  _out_port_32( IOADDRESS + 0x40, 0x03000700);
+  _out_port_32( IOADDRESS + RTL_TX_CONFIG, 0x03000700);
   // Set Receiver Mode.
-  _out_port_32( IOADDRESS + 0x44, 0x3f | (1 << 7));
+  _out_port_32( IOADDRESS + RTL_RX_CONFIG, 0x3f | (1 << 7));
   // Set Receiver and Transmiter buffer.
-  _out_port_32( IOADDRESS + 0x30, adrx);
-  _out_port_32( IOADDRESS + 0x20, ad1);
-  _out_port_32( IOADDRESS + 0x24, ad2);
-  _out_port_32( IOADDRESS + 0x28, ad3);
-  _out_port_32( IOADDRESS + 0x2C, ad4);
+  _out_port_32( IOADDRESS + RTL_RVAD, adrx);
+  _out_port_32( IOADDRESS + RTL_TSAD_1, ad1);
+  _out_port_32( IOADDRESS + RTL_TSAD_2, ad2);
+  _out_port_32( IOADDRESS + RTL_TSAD_3, ad3);
+  _out_port_32( IOADDRESS + RTL_TSAD_4, ad4);
   // Set interruptions.
-  _out_port_16( IOADDRESS + 0x3C , 0x000F );
+  _out_port_16( IOADDRESS + RTL_IMR , 0x000F );
   // Start Receiver and Transmiter
-  _out_port_8( IOADDRESS + 0x37, 0x0C);
+  _out_port_8( IOADDRESS + RTL_COMMANDER, 0x0C);
 
   get_mac();
 }
@@ -74,8 +95,6 @@ get_mac(){
   rtl_info.mac_addr[4] = data;
   rtl_info.mac_addr[5] = data >> 8;
 }
-
-uint8_t broadcast_mac[6] = { 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF };
 
 void
 send_message(Package * data) {
@@ -109,7 +128,7 @@ copy_mac(uint8_t * buffer) {
 
 void
 rtl_irq_handler() {
-  uint16_t check_int = _in_port_16(IOADDRESS + 0x3E);
+  uint16_t check_int = _in_port_16(IOADDRESS + RTL_ISR);
   int size;
   char aux[30];
 
@@ -140,47 +159,20 @@ rtl_irq_handler() {
     }else{
       _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
       start_rtl();
-      _out_port_8(0xA0,0x20);
+      _out_port_8(PIC_SLAVE_ADDR,PIC_ACKNOW);
       return;
     }
-    /*
-    for ( int i = 4 ; i < 10 ; i++ ){
-      size = parse_int(aux,rtl_info.rx_buffer[i],16);
-      aux[size] = 0;
-      char aux2[30];
-      int size2;
-      size2 = parse_int(aux2,rtl_info.mac_addr[pos_mac],16);
-      aux2[size2]=0;
-      if(aux[0]==aux2[0]){
-          whisp++;
-      }
-      size2=parse_int(aux2,broadcast_mac[pos_mac],16);
-      aux[size2]=0;
-      if(aux[0]==aux2[0]){
-          broad++;
-      }
-      pos_mac++;
-    }
-    if(whisp==5){
-       color_msj=0xFF69b4;
-    }
-    if(broad>3){
-       color_msj=0xFFA500;
-    }*/
+
     print_string("\n",0x000000);
     print_string("Mensaje de ",color_msj);
-    print_mac(&rtl_info.rx_buffer[10],color_msj);/*
-    for ( int i = 10 ; i < 16 ; i++ ){
-      size = parse_int(aux,rtl_info.rx_buffer[i],16);
-      aux[size] = 0;
-      print_string(aux,color_msj);
-    }*/
+    print_mac(&rtl_info.rx_buffer[10],color_msj);
+
     print_string("\n", 0xff0000);
     print_string((char *)&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6],color_msj);
     //print_string(&rtl_info.rx_buffer[MAC_ADDRESS_LENGTH * 2 + 6 +20],0xff0000);
     print_string("\n",0);
     restart_line();
-    _out_port_16(IOADDRESS + 0x3E, IRQ_ROK_REG);
+    _out_port_16(IOADDRESS + RTL_ISR, IRQ_ROK_REG);
     //_out_port_16(IOADDRESS + 0X37, 0x04);
     //print_debug();
     start_rtl();
@@ -195,37 +187,8 @@ rtl_irq_handler() {
     print_string(aux,0xffffff);
     print_string("\n",0xffffff);
   }
-  _out_port_8(0xA0,0x20);
+  _out_port_8(PIC_SLAVE_ADDR,PIC_ACKNOW);
 }
-
-/*
-void
-rtl_receive() {
-  int size,length;
-  char aux[30];
-  uint8_t * buf = &(rtl_info.rx_buffer[rtl_info.rx_index]);
-  uint16_t index = rtl_info.rx_index;
-
-  length = (buf[index + 4 + MAC_ADDRESS_LENGTH * 2]) + (buf[index + 4 + MAC_ADDRESS_LENGTH * 2 + 1] << 8);
-  length += 4 + MAC_ADDRESS_LENGTH * 2 + 2;
-
-  rtl_info.rx_index += length;
-  rtl_info.rx_index += 4 - rtl_info.rx_index%4;
-  rtl_info.rx_index %= RX_BUFFER_SIZE;
-
-  _out_port_16(IOADDRESS + 0x38,rtl_info.rx_index - 0x10);
-  print_string("\n", 0xff0000);
-  print_string("RECIBIDO DE:  ",0xff0000);
-  print_mac(&buf[index+ 4 + MAC_ADDRESS_LENGTH]);
-  print_string("\n", 0xff0000);
-  print_string("Longitud: ",0xffffff);
-  size = parse_int(aux, length, 10);
-  aux[size] = 0;
-  print_string(aux, 0xffffff);
-  print_string("\n", 0xff0000);
-  print_string(&buf[4 + MAC_ADDRESS_LENGTH * 2 + 2],0xff0000);
-  print_string("\n", 0xff0000);
-} */
 
 void
 print_mac(uint8_t * mac_dir, uint32_t color){
